@@ -1,14 +1,14 @@
 from flask import render_template
-from app.posts import bp
+from app.products import bp
 from app.extensions import db
-from app.models.post import Post
+from app.models.product import Product
 
 @bp.route('/')
 def index():
-    posts = Post.query.all()
-    return render_template('posts/index.html', posts=posts)
+    products = Product.query.all()
+    return render_template('products/index.html', products=products)
 
 
 @bp.route('/categories/')
 def categories():
-    return render_template('posts/categories.html')
+    return render_template('products/categories.html')

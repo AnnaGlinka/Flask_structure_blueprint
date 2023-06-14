@@ -1,11 +1,13 @@
+from datetime import datetime
 from app.extensions import db
 
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    customer = db.relationship("Customers", uselist=False, backref='order')
-    purchase_list = db.relationship("Products", backref='order')
-    status = db.Column(db.String(20), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+    status = db.Column(db.String(20), default="Pending", nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
+    purchase_list = db.relationship(JsonEncodeDict)
 
     def __repr__(self):
-        return f'<Post "{self.title}">'
+        return f'<Order "{self.id}">'

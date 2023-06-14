@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <span class="title"><h1>{% block title %} The Customers Page {% endblock %}</h1></span>
+    <div class="content">
+        <h2>This is the customers Flask blueprint!</h2>
+        {% for customer in customers %}
+            <div class="post">
+                <p><b>#{{ customer.id }}</b></p>
+                <p class="title">
+                    <b>
+                        <a href="#">
+                            {{ customer.surname }}
+                        </a>
+                    </b>
+                </p>
+                <div class="content">
+                    <p>{{ customer.email }}</p>
+                </div>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

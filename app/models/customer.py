@@ -6,7 +6,6 @@ from flask_login import UserMixin
 
 
 class Customer(db.Model, UserMixin):
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     surname = db.Column(db.String(200), nullable=False)
@@ -19,8 +18,8 @@ class Customer(db.Model, UserMixin):
     apartment_number = db.Column(db.String(20))
     data_added = db.Column(db.DateTime, default=datetime.utcnow())
     password_hash = db.Column(db.String(128))
-    completed_orders = db.relationship('Orders', backref='buyer')
-    shopping_cart = db.relationship("Orders", uselist=False, backref='buyer')
+    # completed_orders = db.relationship('Order', backref='customer')
+    # shopping_cart = db.Column(db.Integer, db.ForeignKey('order.id'))
 
     @property
     def password(self):
