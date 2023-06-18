@@ -6,6 +6,7 @@ from flask_login import UserMixin
 
 
 class Customer(db.Model, UserMixin):
+    __tablename__ = 'Customer'
     customer_id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(200), nullable=False)
     last_name = db.Column(db.String(200), nullable=False)
@@ -14,10 +15,10 @@ class Customer(db.Model, UserMixin):
     phone_number = db.Column(db.String(200), nullable=False)
 
     # one-to-many, optional
-    shipments = db.relationship('Shipment', backref='customer')
-    orders = db.relationship('Order', backref='customer')
-    payments = db.relationship('Payment', backref='customer')
-    carts = db.relationship('Cart', backref='customer')
+    # shipments = db.relationship('Shipment', backref='customer')
+    # orders = db.relationship('Order', backref='customer')
+    # payments = db.relationship('Payment', backref='customer')
+    # carts = db.relationship('Cart', backref='customer')
 
 
     data_added = db.Column(db.DateTime, default=datetime.utcnow())

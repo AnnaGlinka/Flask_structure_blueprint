@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <span class="title"><h1>{% block title %} The Customers Page {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %} The Categories Page {% endblock %}</h1></span>
     <div class="content">
-        <h2>This is the customers Flask blueprint!</h2>
-        {% for customer in customers %}
+        <h2>This is the categories Flask blueprint!</h2>
+        {% for category in categories %}
             <div class="post">
-                <p><b>#{{ customer.customer_id }}</b></p>
+                <p><b>#{{ category.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
-                            {{ customer.last_name }}
+                            {{ category.name }}
                         </a>
                     </b>
                 </p>
                 <div class="content">
-                    <p>{{ customer.email }}</p>
+                    <p>{{ category.products }}</p>
                 </div>
                 <hr>
             </div>
