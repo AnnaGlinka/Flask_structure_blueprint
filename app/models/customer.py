@@ -6,20 +6,18 @@ from flask_login import UserMixin
 
 
 class Customer(db.Model, UserMixin):
-    __tablename__ = 'Customer'
-    customer_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(200), nullable=False)
     last_name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    address = description = db.Column(db.Text, nullable=False)
+    address = db.Column(db.Text(), nullable=False)
     phone_number = db.Column(db.String(200), nullable=False)
 
     # one-to-many, optional
-    # shipments = db.relationship('Shipment', backref='customer')
-    # orders = db.relationship('Order', backref='customer')
-    # payments = db.relationship('Payment', backref='customer')
-    # carts = db.relationship('Cart', backref='customer')
-
+    shipments = db.relationship('Shipment', backref='customer')
+    orders = db.relationship('Order', backref='customer')
+    payments = db.relationship('Payment', backref='customer')
+    carts = db.relationship('Cart', backref='customer')
 
     data_added = db.Column(db.DateTime, default=datetime.utcnow())
     password_hash = db.Column(db.String(128))

@@ -6,11 +6,11 @@
         <h2>This is the order items Flask blueprint!</h2>
         {% for order_item in order_items %}
             <div class="post">
-                <p><b>#{{ order_item.order_item_id }}</b></p>
+                <p><b>#{{ order_item.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
-                            {{ order_item.price }}
+                            {{ order_item.quantity }}
                         </a>
                     </b>
                 </p>

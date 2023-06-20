@@ -32,6 +32,18 @@ def create_app(config_class=Config):
     from app.categories import bp as categories_bp
     app.register_blueprint(categories_bp, url_prefix='/categories')
 
+    from app.order_items import bp as order_items_bp
+    app.register_blueprint(order_items_bp, url_prefix='/order_items')
+
+    from app.payments import bp as payments_bp
+    app.register_blueprint(payments_bp, url_prefix='/payments')
+
+    from app.shipments import bp as shipments_bp
+    app.register_blueprint(shipments_bp, url_prefix='/shipments')
+
+    from app.carts import bp as carts_bp
+    app.register_blueprint(carts_bp, url_prefix='/carts')
+
     @app.route('/test/')
     def test_page():
         return '<h1>Testing the Flask Application Factory Pattern</h1>'

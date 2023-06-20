@@ -6,7 +6,7 @@
         <h2>This is the shipments Flask blueprint!</h2>
         {% for shipment in shipments %}
             <div class="post">
-                <p><b>#{{ shipment.shipment_id }}</b></p>
+                <p><b>#{{ shipment.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
@@ -16,6 +16,12 @@
                 </p>
                 <div class="content">
                     <p>{{ shipment.city }}</p>
+                </div>
+                <div class="content">
+                    <p>{{ shipment.customer_id }}</p>
+                </div>
+                <div class="content">
+                    <p>{{ shipment.orders }}</p>
                 </div>
                 <hr>
             </div>

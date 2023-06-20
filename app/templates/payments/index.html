@@ -6,7 +6,7 @@
         <h2>This is the payment Flask blueprint!</h2>
         {% for payment in payments %}
             <div class="post">
-                <p><b>#{{ payment.payment_id }}</b></p>
+                <p><b>#{{ payment.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
@@ -16,6 +16,12 @@
                 </p>
                 <div class="content">
                     <p>{{ payment.customer_id }}</p>
+                </div>
+                 <div class="content">
+                    <p>{{ payment.payment_method }}</p>
+                </div>
+                 <div class="content">
+                    <p>{{ payment.orders }}</p>
                 </div>
                 <hr>
             </div>

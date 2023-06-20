@@ -6,7 +6,7 @@
         <h2>This is the customers Flask blueprint!</h2>
         {% for customer in customers %}
             <div class="post">
-                <p><b>#{{ customer.customer_id }}</b></p>
+                <p><b>#{{ customer.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
@@ -16,6 +16,12 @@
                 </p>
                 <div class="content">
                     <p>{{ customer.email }}</p>
+                </div>
+                <div class="content">
+                    <p>{{ customer.address }}</p>
+                </div>
+                  <div class="content">
+                    <p>{{ customer.orders }}</p>
                 </div>
                 <hr>
             </div>
