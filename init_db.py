@@ -4,7 +4,7 @@ from app.models.category import Category
 from app.models.product import Product
 from app.models.customer import Customer
 from app.models.order import Order
-from app.models.order_item import Order_Item
+from app.models.order_item import OrderItem
 from app.models.payment import Payment
 from app.models.shipment import Shipment
 from app.models.cart import Cart
@@ -102,10 +102,10 @@ ord3 = Order(total_price="200", status="Pending", customer_id=4, payment_id=3, s
 
 # Create Order Items ----------------------------------------------------
 
-ord_item_1 = Order_Item(quantity=1, price=1, product_id=1, order_id=1)
-ord_item_2 = Order_Item(quantity=2, price=2, product_id=2, order_id=1)
-ord_item_3 = Order_Item(quantity=3, price=3, product_id=3, order_id=2)
-ord_item_4 = Order_Item(quantity=4, price=4, product_id=4, order_id=2)
+ord_item_1 = OrderItem(quantity=1, price=1, product_id=1, order_id=1)
+ord_item_2 = OrderItem(quantity=2, price=2, product_id=2, order_id=1)
+ord_item_3 = OrderItem(quantity=3, price=3, product_id=3, order_id=2)
+ord_item_4 = OrderItem(quantity=4, price=4, product_id=4, order_id=2)
 
 # Create Carts ----------------------------------------------------
 cart1 = Cart(quantity=1, customer_id=1, product_id=1)

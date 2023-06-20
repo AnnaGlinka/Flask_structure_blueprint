@@ -13,7 +13,7 @@ class Order(db.Model):
 
 
     # one-to-many, mandatory
-    order_items = db.relationship('Order_Item', backref='order')
+    order_items = db.relationship('OrderItem', backref='order')
 
     def __repr__(self):
         return f'<Order "{self.id}">'

@@ -9,7 +9,7 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     #
     # # one-to-many, optional
-    order_item = db.relationship('Order_Item', backref='product')
+    order_item = db.relationship('OrderItem', backref='product')
     cart = db.relationship('Cart', backref='product')
 
     def __repr__(self):
