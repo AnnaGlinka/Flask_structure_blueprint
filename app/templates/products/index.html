@@ -1,36 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <span class="title"><h1>{% block title %} The Product Page {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %}  {% endblock %}</h1></span>
     <div class="content">
-        <h2>This is the Product Flask blueprint!</h2>
+        <h2></h2>
+
         {% for product in products %}
-            <div class="product">
-                <p><b>#{{ product.id }}</b></p>
-                <p class="title">
-                    <b>
-                        <a href="#">
-                            {{ product.name }}
-                        </a>
-                    </b>
-                </p>
-                <div class="content">
-                    <p>{{ product.description }}</p> <br/>
-                </div>
-                <div class="content">
-                    <p>{{ product.price }}</p> <br/>
-                </div>
-                <div class="content">
-                    <p>{{ product.stock }}</p> <br/>
-                </div>
-                 <div class="content">
-                    <p>{{ product.category_id }}</p> <br/>
-                </div>
-                <div class="content">
-                    <p>{{ product.order_item }}</p> <br/>
-                </div>
-                <hr>
-            </div>
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <small>Product Id: {{  product.id }}</small><br/>
+            <h4>{{ product.name }}</h4>
+            {{ product.description }}<br/><br/>
+            ${{ product.price }}<br/>
+            In stock: {{ product.stock }}<br/>
+            Category: {{ product.category_id }}<br/>
+<!--            {{ product.order_item }}<br/>-->
+        <br/>
+        </div>
+        <br/>
         {% endfor %}
+
+
     </div>
 {% endblock %}
