@@ -5,7 +5,6 @@
     <div class="content">
         <h2></h2>
 
-        {% for product in products %}
         <div class="shadow p-3 mb-5 bg-body rounded">
             <small>Product Id: {{  product.id }}</small><br/>
             <h4>{{ product.name }}</h4>
@@ -14,13 +13,11 @@
             In stock: {{ product.stock }}<br/>
             Category: {{ product.category_id }}<br/>
 <!--            {{ product.order_item }}<br/>-->
-            <br/>
-            <a href="{{ url_for('products.show_product', id=product.id) }}"
-               class="btn btn-outline-secondary btn-sm">View Product</a>
         <br/>
         </div>
-        <br/>
-        {% endfor %}
+        <a href="{{ url_for('products.index') }}"
+           class="btn btn-outline-secondary btn-sm">Back to product browsing</a>
+
 
 
     </div>

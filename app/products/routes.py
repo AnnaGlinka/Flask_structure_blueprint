@@ -34,6 +34,13 @@ def add_product():
     return render_template('products/add_product.html', form=form)
 
 
+@bp.route('/product/<int:id>')
+def show_product(id):
+    product = Product.query.get_or_404(id)
+    return render_template('products/product.html', product=product)
+
+
+
 @bp.route('/categories/')
 def categories():
     return render_template('products/categories.html')
