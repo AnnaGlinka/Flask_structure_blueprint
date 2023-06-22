@@ -36,6 +36,12 @@ def add_customer():
     return render_template('customers/add_customer.html', form=form)
 
 
+@bp.route('/customer/<int:id>')
+def show_customer(id):
+    customer = Customer.query.get_or_404(id)
+    return render_template('customers/customer.html', customer=customer)
+
+
 @bp.route('/categories/')
 def categories():
     return render_template('customers/categories.html')
