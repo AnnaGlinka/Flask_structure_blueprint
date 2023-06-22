@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, flash
 from app.products import bp
 from app.extensions import db
 from app.models.product import Product
@@ -30,6 +30,7 @@ def add_product():
 
         db.session.add(product)
         db.session.commit()
+        flash("Product Added Successfully!")
 
     return render_template('products/add_product.html', form=form)
 

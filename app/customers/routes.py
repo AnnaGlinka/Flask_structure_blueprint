@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, flash
 from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
@@ -32,6 +32,7 @@ def add_customer():
         form.email.data = ''
         form.address.data = ''
         form.phone_number.data = ''
+        flash("Account Added Successfully!")
 
     return render_template('customers/add_customer.html', form=form)
 
