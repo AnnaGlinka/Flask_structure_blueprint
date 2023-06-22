@@ -26,13 +26,17 @@ def add_customer():
                                 )
             db.session.add(customer)
             db.session.commit()
+            flash("Account Added Successfully!")
 
+        else:
+            flash("The user with this email already has an account!")
+
+        # Clear the form
         form.first_name.data = ''
         form.last_name.data = ''
         form.email.data = ''
         form.address.data = ''
         form.phone_number.data = ''
-        flash("Account Added Successfully!")
 
     return render_template('customers/add_customer.html', form=form)
 

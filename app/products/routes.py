@@ -15,22 +15,28 @@ def add_product():
     form = AddNewProductForm()
     if form.validate_on_submit():
         # seller = current_user.id()
-        product = Product(name=form.name.data,
-                          description=form.description.data,
-                          price=form.price.data,
-                          stock=form.stock.data,
-                          category_id=form.category_id.data
-                          )
+        product = Product.query.filter_by(name=form.name.data).first()
+        if product is None:
+            product = Product(name=form.name.data,
+                              description=form.description.data,
+                              price=form.price.data,
+                              stock=form.stock.data,
+                              category_id=form.category_id.data
+                              )
+
+            db.session.add(product)
+            db.session.commit()
+            flash("Product Added Successfully!")
+
+        else:
+            flash("The product with the same name already exists in the database!")
+
         # Clear the form
         form.name.data = ''
         form.description.data = ''
         form.price.data = ''
         form.stock.data = ''
         form.category_id.data = ''
-
-        db.session.add(product)
-        db.session.commit()
-        flash("Product Added Successfully!")
 
     return render_template('products/add_product.html', form=form)
 
