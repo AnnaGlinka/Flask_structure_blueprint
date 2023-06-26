@@ -3,7 +3,7 @@ from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
 from app.customers.forms import CustomerForm
-
+from sqlalchemy.exc import IntegrityError
 
 
 @bp.route('/')
@@ -46,18 +46,20 @@ def update_user(id):
     form = CustomerForm()
     customer_to_update = Customer.query.get_or_404(id)
     if request.method == 'POST':
-        customer_to_update.first_name = request.form['first_name']
-        customer_to_update.last_name = request.form['last_name']
-        customer_to_update.email = request.form['email']
-        customer_to_update.address = request.form['address']
-        customer_to_update.phone_number = request.form['phone_number']
         try:
+            customer_to_update.first_name = request.form['first_name']
+            customer_to_update.last_name = request.form['last_name']
+            customer_to_update.email = request.form['email']
+            customer_to_update.address = request.form['address']
+            customer_to_update.phone_number = request.form['phone_number']
+
             db.session.commit()
             flash("Account updated successfully!")
             return render_template("customers/update.html", form=form, customer_to_update=customer_to_update, id=id)
 
-        except:
-            flash("Error! Looks like there was a problem ... please try again!")
+        except IntegrityError:
+            db.session.rollback()
+            flash("Error! This email already exists in the database!")
             return render_template("customers/update.html", form=form, customer_to_update=customer_to_update)
 
     else:
