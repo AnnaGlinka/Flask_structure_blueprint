@@ -1,4 +1,4 @@
-from flask import render_template, flash
+from flask import render_template, flash, request
 from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
@@ -39,6 +39,29 @@ def add_customer():
         form.phone_number.data = ''
 
     return render_template('customers/add_customer.html', form=form)
+
+
+@bp.route('/customer/update/<int:id>', methods=['POST', 'GET'])
+def update_user(id):
+    form = CustomerForm()
+    customer_to_update = Customer.query.get_or_404(id)
+    if request.method == 'POST':
+        customer_to_update.first_name = request.form['first_name']
+        customer_to_update.last_name = request.form['last_name']
+        customer_to_update.email = request.form['email']
+        customer_to_update.address = request.form['address']
+        customer_to_update.phone_number = request.form['phone_number']
+        try:
+            db.session.commit()
+            flash("Account updated successfully!")
+            return render_template("customers/update.html", form=form, customer_to_update=customer_to_update, id=id)
+
+        except:
+            flash("Error! Looks like there was a problem ... please try again!")
+            return render_template("customers/update.html", form=form, customer_to_update=customer_to_update)
+
+    else:
+        return render_template("customers/update.html", form=form, customer_to_update=customer_to_update, id=id)
 
 
 @bp.route('/customer/<int:id>')

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<h1>Update user profile</h1>
+<div class="shadow p-3 mb-5 bg-body rounded">
+
+    <form action="{{url_for('customers.update_user', id=customer_to_update.id) }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.first_name.label(class="form-label") }}
+        {{ form.first_name(class="form-control", value=customer_to_update.first_name) }}
+        {{ form.last_name.label(class="form-label") }}
+        {{ form.last_name(class="form-control", value=customer_to_update.last_name) }}
+
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control", rows="10", value=customer_to_update.email) }}
+        {{ form.address.label(class="form-label") }}
+        {{ form.address(class="form-control", rows="10", value=customer_to_update.address) }}
+        {{ form.phone_number.label(class="form-label") }}
+        {{ form.phone_number(class="form-control", rows="10", value=customer_to_update.phone_number) }}
+        <br/>
+        {{ form.submit(class="btn btn-secondary") }}
+
+        <a href="{{ url_for('customers.index', id=customer_to_update.id) }}"
+               class="btn btn-outline-secondary">Back browsing customers</a>
+
+    </form>
+
+
+</div>
+{% endblock %}
