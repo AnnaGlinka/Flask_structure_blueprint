@@ -22,7 +22,6 @@ class Customer(db.Model, UserMixin):
     data_added = db.Column(db.DateTime, default=datetime.utcnow())
     password_hash = db.Column(db.String(128))
 
-
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')

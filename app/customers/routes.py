@@ -4,6 +4,8 @@ from app.extensions import db
 from app.models.customer import Customer
 from app.customers.forms import CustomerForm
 from sqlalchemy.exc import IntegrityError
+from app.models.customer import generate_password_hash
+
 
 
 @bp.route('/')
@@ -12,17 +14,20 @@ def index():
     return render_template('customers/index.html', customers=customers)
 
 
-@bp.route('/add', methods=['GET', 'POST'])
-def add_customer():
+@bp.route('/login', methods=['GET', 'POST'])
+def customer_create():
     form = CustomerForm()
     if form.validate_on_submit():
         customer = Customer.query.filter_by(email=form.email.data).first()
         if customer is None:
+            # hash the pw
+            hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
             customer = Customer(first_name=form.first_name.data,
                                 last_name=form.last_name.data,
                                 email=form.email.data,
                                 address=form.address.data,
-                                phone_number=form.phone_number.data
+                                phone_number=form.phone_number.data,
+                                password_hash=hashed_pw
                                 )
             db.session.add(customer)
             db.session.commit()
@@ -37,8 +42,9 @@ def add_customer():
         form.email.data = ''
         form.address.data = ''
         form.phone_number.data = ''
+        form.password_hash.data = ''
 
-    return render_template('customers/add_customer.html', form=form)
+    return render_template('customers/customer_create.html', form=form)
 
 
 @bp.route('/customer/update/<int:id>', methods=['POST', 'GET'])
@@ -52,7 +58,6 @@ def update_user(id):
             customer_to_update.email = request.form['email']
             customer_to_update.address = request.form['address']
             customer_to_update.phone_number = request.form['phone_number']
-
             db.session.commit()
             flash("Account updated successfully!")
             return render_template("customers/update.html", form=form, customer_to_update=customer_to_update, id=id)

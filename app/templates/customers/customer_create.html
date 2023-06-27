@@ -25,8 +25,16 @@
         {{ form.address(class="form-control", rows="10") }}
         {{ form.phone_number.label(class="form-label") }}
         {{ form.phone_number(class="form-control", rows="10") }}
+
+        {{ form.password_hash.label(class="form-label") }}
+        {{ form.password_hash(class="form-control", rows="10") }}
+        {{ form.password_hash2.label(class="form-label") }}
+        {{ form.password_hash2(class="form-control", rows="10") }}
         <br/>
         {{ form.submit(class="btn btn-secondary") }}
+
+        <a href="{{ url_for('customers.index')}}"
+               class="btn btn-outline-secondary">Back browsing customers</a>
 
     </form>
 
