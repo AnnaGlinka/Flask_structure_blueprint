@@ -72,6 +72,31 @@ def show_customer(id):
     return render_template('customers/customer.html', customer=customer)
 
 
+@bp.route('/customer/delete/<int:id>')
+def delete_customer(id):
+    customer_to_delete = Customer.query.get_or_404(id)
+
+    try:
+        db.session.delete(customer_to_delete)
+        db.session.commit()
+        # Return a message
+        flash("Customer was deleted")
+        # Grab all the posts from the database
+        customers = Customer.query.order_by(Customer.id)
+        return render_template("customers/index.html", customers=customers)
+
+    except:
+
+        # Return an error message
+        flash("There was a problem deleting this customer, try again")
+
+        # Grab all the posts from the database
+        customers = Customer.query.order_by(Customer.id)
+        return render_template("customers/index.html", customers=customers)
+
+
+
+
 @bp.route('/categories/')
 def categories():
     return render_template('customers/categories.html')

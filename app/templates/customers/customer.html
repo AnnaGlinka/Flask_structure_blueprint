@@ -21,7 +21,9 @@
         <a href="{{ url_for('customers.update_user', id=customer.id) }}"
            class="btn btn-outline-secondary btn-sm">Update</a>
 
-
+        <a href="{{ url_for('customers.delete_customer', id=customer.id) }}" class="btn btn-outline-danger btn-sm">
+        Delete User
+        </a>
 
     </div>
 {% endblock %}
