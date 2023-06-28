@@ -3,8 +3,10 @@ from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
 from app.customers.forms import CustomerForm
+from app.customers.forms import PasswordForm
 from sqlalchemy.exc import IntegrityError
 from app.models.customer import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -100,6 +102,33 @@ def delete_customer(id):
         return render_template("customers/index.html", customers=customers)
 
 
+@bp.route('/test_pw', methods=['GET', 'POST'])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+        # Clear the form
+        form.email.data = ''
+        form.password_hash.data = ''
+
+        # find customer by email address
+        pw_to_check = Customer.query.filter_by(email=email).first()
+
+        # Check Hashed Passwrod
+        passed = check_password_hash(pw_to_check.password_hash, password)
+
+    return render_template('customers/test_pw.html',
+                           email=email,
+                           password=password,
+                           pw_to_check=pw_to_check,
+                           passed=passed,
+                           form=form)
 
 
 @bp.route('/categories/')

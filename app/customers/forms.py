@@ -14,3 +14,9 @@ class CustomerForm(FlaskForm):
                                                                       message='Passwords must match!')])
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+
+class PasswordForm(FlaskForm):
+    email = StringField("What's your email?", validators=[DataRequired()])
+    password_hash = PasswordField("What's your password?", validators=[DataRequired()])
+    submit = SubmitField("Submit")
