@@ -1,7 +1,10 @@
 from flask import Flask
+from flask_login import LoginManager
 
 from config import Config
 from app.extensions import db
+from app.models.customer import Customer
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -9,6 +12,14 @@ def create_app(config_class=Config):
 
     # Initialize Flask extensions here
     db.init_app(app)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'customers.login'
+
+    @login_manager.user_loader
+    def load_user(customer_id):
+        return Customer.query.get(int(customer_id))
 
     # Register blueprints here
     from app.main import bp as main_bp

@@ -20,3 +20,9 @@ class PasswordForm(FlaskForm):
     email = StringField("What's your email?", validators=[DataRequired()])
     password_hash = PasswordField("What's your password?", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+
+class LoginForm(FlaskForm):
+    email = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")

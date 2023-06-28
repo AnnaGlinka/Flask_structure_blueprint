@@ -1,13 +1,13 @@
-from flask import render_template, flash, request
+from flask import render_template, flash, request, redirect, url_for
 from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
 from app.customers.forms import CustomerForm
 from app.customers.forms import PasswordForm
+from app.customers.forms import LoginForm
 from sqlalchemy.exc import IntegrityError
-from app.models.customer import generate_password_hash
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 
 @bp.route('/')
@@ -16,7 +16,7 @@ def index():
     return render_template('customers/index.html', customers=customers)
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/add', methods=['GET', 'POST'])
 def customer_create():
     form = CustomerForm()
     if form.validate_on_submit():
@@ -129,6 +129,37 @@ def test_pw():
                            pw_to_check=pw_to_check,
                            passed=passed,
                            form=form)
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        customer = Customer.query.filter_by(email=form.email.data).first()
+        if customer:
+            if check_password_hash(customer.password_hash, form.password.data):
+                login_user(customer)
+                flash("Login successful")
+                return redirect(url_for('customers.dashboard'))
+            else:
+                flash("Wrong password!")
+        else:
+            flash("That email doesn't exist in the database")
+    return render_template('customers/login.html', form=form)
+
+
+@bp.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template("customers/dashboard.html")
+
+
+@bp.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out!")
+    return redirect(url_for('customers.login'))
 
 
 @bp.route('/categories/')
