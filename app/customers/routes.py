@@ -47,7 +47,8 @@ def customer_create():
         form.password_hash.data = ''
 
     else:
-        flash("Validation error: " + str(form.errors))
+        if form.errors:
+            flash("Validation error: " + str(form.errors))
     return render_template('customers/customer_create.html', form=form)
 
 
