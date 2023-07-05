@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+
+
+    <br/>
+    <div class="card">
+      <div class="card-header">
+        {{ current_user.first_name }} {{ current_user.last_name }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Welcome to your customer profile!</h5>
+        <p class="card-text">
+                <strong>Customer Id: </strong>{{ current_user.id }}<br/>
+                <strong>First Name: </strong>{{ current_user.first_name }}<br/>
+                <strong>Last Name: </strong>{{ current_user.last_name }}<br/>
+                <strong>Email: </strong>{{ current_user.email }}<br/>
+                <strong>Address: </strong>{{ current_user.address }}<br/>
+                <strong>Phone: </strong>{{ current_user.phone_number }}<br/>
+                <strong>Date Joined: </strong>{{ current_user.data_added }}<br/>
+        </p>
+        <a href="{{ url_for('customers.logout') }}" class="btn btn-secondary btn-sm">Logout</a>
+      </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

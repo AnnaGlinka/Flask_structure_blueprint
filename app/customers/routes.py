@@ -11,6 +11,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 
 
 @bp.route('/')
+@login_required
 def index():
     customers = Customer.query.all()
     return render_template('customers/index.html', customers=customers)
@@ -143,7 +144,7 @@ def login():
             if check_password_hash(customer.password_hash, form.password.data):
                 login_user(customer)
                 flash("Login successful")
-                return redirect(url_for('customers.dashboard'))
+                return redirect(url_for('customers.user_profile'))
             else:
                 flash("Wrong password!")
         else:
@@ -151,10 +152,10 @@ def login():
     return render_template('customers/login.html', form=form)
 
 
-@bp.route('/dashboard', methods=['GET', 'POST'])
+@bp.route('/user_profile', methods=['GET', 'POST'])
 @login_required
-def dashboard():
-    return render_template("customers/dashboard.html")
+def user_profile():
+    return render_template("customers/user_profile.html")
 
 
 @bp.route('/logout', methods=['GET', 'POST'])

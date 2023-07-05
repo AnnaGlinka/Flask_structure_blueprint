@@ -3,6 +3,7 @@ from app.products import bp
 from app.extensions import db
 from app.models.product import Product
 from app.products.forms import AddNewProductForm
+from flask_login import login_required
 
 @bp.route('/')
 def index():
@@ -11,6 +12,7 @@ def index():
 
 
 @bp.route('/add-product', methods=['GET', 'POST'])
+@login_required
 def add_product():
     form = AddNewProductForm()
     if form.validate_on_submit():
