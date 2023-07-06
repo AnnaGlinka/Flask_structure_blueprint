@@ -11,7 +11,7 @@
 
     <span class="title"><h1>{% block title %} The Categories Page {% endblock %}</h1></span>
     <div class="content">
-        <h2>This is the categories Flask blueprint!</h2>
+       <br/>
 
         {% for category in categories %}
             <div class="shadow p-3 mb-5 bg-body rounded">
@@ -19,6 +19,15 @@
             <h4>{{ category.name }}</h4>
 
             <br/>
+
+             <a href="{{ url_for('categories.edit_category', id=category.id) }}" class="btn btn-outline-secondary btn-sm">
+                Edit
+            </a>
+
+              <a href="{{ url_for('categories.delete_category', id=category.id) }}" class="btn btn-outline-danger btn-sm">
+                Delete
+            </a>
+
 
         <br/>
         </div>

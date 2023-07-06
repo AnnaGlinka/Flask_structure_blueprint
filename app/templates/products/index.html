@@ -12,7 +12,7 @@
             {{ product.description }}<br/><br/>
             ${{ product.price }}<br/>
             In stock: {{ product.stock }}<br/>
-            Category: {{ product.category_id }}<br/>
+            Category: {{ product.category_id}}<br/>
 <!--            {{ product.order_item }}<br/>-->
             <br/>
             <a href="{{ url_for('products.show_product', id=product.id) }}"

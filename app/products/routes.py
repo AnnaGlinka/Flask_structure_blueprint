@@ -2,7 +2,7 @@ from flask import render_template, flash
 from app.products import bp
 from app.extensions import db
 from app.models.product import Product
-from app.products.forms import AddNewProductForm
+from app.products.forms import ProductForm
 from flask_login import login_required
 
 @bp.route('/')
@@ -14,7 +14,7 @@ def index():
 @bp.route('/add-product', methods=['GET', 'POST'])
 @login_required
 def add_product():
-    form = AddNewProductForm()
+    form = ProductForm()
     if form.validate_on_submit():
         # seller = current_user.id()
         product = Product.query.filter_by(name=form.name.data).first()
