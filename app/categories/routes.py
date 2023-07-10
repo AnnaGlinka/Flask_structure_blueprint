@@ -1,5 +1,7 @@
 
 from flask import render_template, flash, redirect, url_for
+from sqlalchemy.exc import IntegrityError
+
 from app.categories import bp
 from app.extensions import db
 from app.models.category import Category
@@ -64,8 +66,9 @@ def delete_category(id):
         categories = Category.query.order_by(Category.id)
         return render_template("categories/index.html", categories=categories)
 
-    except:
-        flash("There was a problem deleting posts, try again")
+    except IntegrityError:
+        db.session.rollback()
+        flash("The category that is uses in Products cannot be deleted!")
         categories = Category.query.order_by(Category.id)
         return render_template("categories/index.html", categories=categories)
 

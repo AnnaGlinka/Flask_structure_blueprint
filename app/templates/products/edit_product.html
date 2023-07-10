@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+
+<br/>
+<h2>Edit product...</h2>
+<br/>
+<div class="shadow p-3 mb5 bg-body rounded">
+  <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control") }}
+        {{ form.price.label(class="form-label") }}
+        {{ form.price(class="form-control") }}
+        {{ form.stock.label(class="form-label") }}
+        {{ form.stock(class="form-control") }}
+        {{ form.category_id.label(class="form-label") }}
+        {{ form.category_id(class="form-control") }}
+
+
+        <br/>
+        {{ form.submit(class="btn btn-secondary") }}
+
+    </form>
+
+
+</div>
+<br/>
+
+<a href="{{ url_for('products.index') }}" class="btn btn-outline-secondary btn-sm">Back to products list</a>
+
+
+{% endblock %}

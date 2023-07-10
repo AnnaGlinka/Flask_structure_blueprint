@@ -6,7 +6,7 @@ class Product(db.Model):
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Numeric, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id',  ondelete='RESTRICT'), nullable=False)
     #
     # # one-to-many, optional
     order_item = db.relationship('OrderItem', backref='product')
