@@ -75,5 +75,25 @@ def edit_product(id):
     return render_template('products/edit_product.html', form=form)
 
 
+@bp.route('/delete_product/<int:id>')
+@login_required
+def delete_product(id):
+    product_to_delete = Product.query.get_or_404(id)
+
+    try:
+        db.session.delete(product_to_delete)
+        db.session.commit()
+        # Return a message
+        flash("Product was deleted")
+        # Grab all the products from the database
+        products = Product.query.order_by(Product.id)
+        return render_template("products/index.html", products=products)
+
+    except InterruptedError:
+        db.session.rollback()
+        flash("There was a problem deleting this product")
+        products = Product.query.order_by(Product.id)
+        return render_template("products/index.html", products=products)
+
 
 

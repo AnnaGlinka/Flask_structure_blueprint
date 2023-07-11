@@ -101,7 +101,7 @@ def delete_customer(id):
         # Return an error message
         flash("There was a problem deleting this customer, try again")
 
-        # Grab all the posts from the database
+        # Grab all customers from the database
         customers = Customer.query.order_by(Customer.id)
         return render_template("customers/index.html", customers=customers)
 
