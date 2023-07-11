@@ -26,12 +26,15 @@
             <br/>
             <a href="{{ url_for('products.show_product', id=product.id) }}"
                class="btn btn-outline-secondary btn-sm">View Product</a>
-            <a href="{{ url_for('products.edit_product', id=product.id) }}" class="btn btn-outline-secondary btn-sm">
-                Edit
-            </a>
-            <a href="{{ url_for('products.delete_product', id=product.id) }}" class="btn btn-outline-danger btn-sm">
-                Delete
-            </a>
+
+            {% if current_user.email == 'aglinka8@gmail.com' %}
+                <a href="{{ url_for('products.edit_product', id=product.id) }}" class="btn btn-outline-secondary btn-sm">
+                    Edit
+                </a>
+                <a href="{{ url_for('products.delete_product', id=product.id) }}" class="btn btn-outline-danger btn-sm">
+                    Delete
+                </a>
+            {% endif %}
 
         <br/>
         </div>

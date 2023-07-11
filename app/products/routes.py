@@ -3,7 +3,7 @@ from app.products import bp
 from app.extensions import db
 from app.models.product import Product
 from app.products.forms import ProductForm
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 @bp.route('/')
 def index():
@@ -79,21 +79,28 @@ def edit_product(id):
 @login_required
 def delete_product(id):
     product_to_delete = Product.query.get_or_404(id)
+    admin_email = current_user.email
+    if admin_email == 'aglinka8@gmail.com':
+        try:
+            db.session.delete(product_to_delete)
+            db.session.commit()
+            # Return a message
+            flash("Product was deleted")
+            # Grab all the products from the database
+            products = Product.query.order_by(Product.id)
+            return render_template("products/index.html", products=products)
 
-    try:
-        db.session.delete(product_to_delete)
-        db.session.commit()
-        # Return a message
-        flash("Product was deleted")
-        # Grab all the products from the database
+        except InterruptedError:
+            db.session.rollback()
+            flash("There was a problem deleting this product")
+            products = Product.query.order_by(Product.id)
+            return render_template("products/index.html", products=products)
+
+    else:
+        flash("You are not authorized to delete products!")
         products = Product.query.order_by(Product.id)
         return render_template("products/index.html", products=products)
 
-    except InterruptedError:
-        db.session.rollback()
-        flash("There was a problem deleting this product")
-        products = Product.query.order_by(Product.id)
-        return render_template("products/index.html", products=products)
 
 
 
