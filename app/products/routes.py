@@ -5,6 +5,7 @@ from app.models.product import Product
 from app.products.forms import ProductForm
 from flask_login import login_required, current_user
 
+
 @bp.route('/')
 def index():
     products = Product.query.all()
