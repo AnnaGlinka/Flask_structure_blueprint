@@ -53,26 +53,33 @@ def show_product(id):
 @login_required
 def edit_product(id):
     product = Product.query.get_or_404(id)
-    form = ProductForm()
-    if form.validate_on_submit():
-        product.name = form.name.data
-        product.description = form.description.data
-        product.price = form.price.data
-        product.stock = form.stock.data
-        product.category_id = form.category_id.data
-        # Update Database
-        db.session.add(product)
-        db.session.commit()
-        flash("Product has been updated")
-        return redirect(url_for('products.index', id=product.id))
+    product_to_delete = Product.query.get_or_404(id)
+    admin_email = current_user.email
+    if admin_email == 'aglinka8@gmail.com':
+        form = ProductForm()
+        if form.validate_on_submit():
+            product.name = form.name.data
+            product.description = form.description.data
+            product.price = form.price.data
+            product.stock = form.stock.data
+            product.category_id = form.category_id.data
+            # Update Database
+            db.session.add(product)
+            db.session.commit()
+            flash("Product has been updated")
+            return redirect(url_for('products.index', id=product.id))
 
-    form.name.data = product.name
-    form.description.data = product.description
-    form.price.data = product.price
-    form.stock.data = product.stock
-    form.category_id.data = product.category_id
+        form.name.data = product.name
+        form.description.data = product.description
+        form.price.data = product.price
+        form.stock.data = product.stock
+        form.category_id.data = product.category_id
 
-    return render_template('products/edit_product.html', form=form)
+        return render_template('products/edit_product.html', form=form)
+    else:
+        flash("You are not authorized to edit products!")
+        products = Product.query.order_by(Product.id)
+        return render_template("products/index.html", products=products)
 
 
 @bp.route('/delete_product/<int:id>')
