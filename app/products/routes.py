@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for
 from app.products import bp
 from app.extensions import db
 from app.models.product import Product
+from app.models.cart import Cart
 from app.products.forms import ProductForm
 from flask_login import login_required, current_user
 
@@ -109,6 +110,17 @@ def delete_product(id):
         products = Product.query.order_by(Product.id)
         return render_template("products/index.html", products=products)
 
+
+@bp.route('/product/add_to_cart/<int:id>', methods=['GET', 'POST'])
+@login_required
+def add_to_carts(id):
+    product = Product.query.get_or_404(id)
+    cart = Cart(quantity=1, customer_id=current_user.id, product_id=product.id)
+    db.session.add(cart)
+    db.session.commit()
+    flash(f"Product added to your cart: {product}")
+    products = Product.query.order_by(Product.id)
+    return render_template('products/index.html', products=products)
 
 
 

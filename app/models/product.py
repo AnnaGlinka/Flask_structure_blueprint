@@ -13,4 +13,4 @@ class Product(db.Model):
     cart = db.relationship('Cart', backref='product')
 
     def __repr__(self):
-        return f'<Product "{self.name}">'
+        return f'{self.description}'

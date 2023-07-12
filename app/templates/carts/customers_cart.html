@@ -10,14 +10,14 @@
                     <p><b> Product Id:{{ cart.product_id }} </b></p>
                     <b>
                         <a href="#">
-                            {{ products[cart.product_id-1] }}
+                            {{ products[cart.product_id] }}
                         </a>
                         <br/>
                     </b>
                 </p>
                 <div class="content">
                     <p>Customer ID: {{ cart.customer_id }}</p>
-                    <p>Customer : {{ customers[ cart.customer_id-1] }}</p>
+                    <p>Customer : {{ customers[ cart.customer_id] }}</p>
                     <p>Quantity: {{ cart.quantity }}</p>
                 </div>
                 <hr>

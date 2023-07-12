@@ -2,6 +2,7 @@ from flask import render_template, flash, request, redirect, url_for
 from app.customers import bp
 from app.extensions import db
 from app.models.customer import Customer
+from app.models.cart import Cart
 from app.customers.forms import CustomerForm
 from app.customers.forms import PasswordForm
 from app.customers.forms import LoginForm
