@@ -116,11 +116,18 @@ def delete_product(id):
 def add_to_carts(id):
     product = Product.query.get_or_404(id)
     cart = Cart(quantity=1, customer_id=current_user.id, product_id=product.id)
-    db.session.add(cart)
-    db.session.commit()
-    flash(f"Product added to your cart: {product}")
-    products = Product.query.order_by(Product.id)
-    return render_template('products/index.html', products=products)
+    if product.stock > 0:
+        product.stock = product.stock - 1
+        db.session.add(cart)
+        db.session.commit()
+        flash(f"Product added to your cart: {product}")
+        carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+        products = Product.query.all()
+        return render_template('carts/customers_cart.html', carts=carts, products=products)
+    else:
+        flash(f"Product {product} currently unavailable !!!")
+        products = Product.query.order_by(Product.id)
+        return render_template('products/index.html', products=products)
 
 
 
