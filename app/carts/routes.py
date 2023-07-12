@@ -18,11 +18,12 @@ def index():
                            customers=customers)
 
 
-@bp.route('/')
+@bp.route('/cart')
 @login_required
 def show_user_carts():
-    carts = Cart.query.filter(customer_id=current_user.id)
-    return render_template('carts/index.html', carts=carts)
+    carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+    products = Product.query.all()
+    return render_template('carts/customers_cart.html', carts=carts, products=products)
 
 
 

@@ -1,23 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <span class="title"><h1>{% block title %} The Carts Page {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %} Your cart {% endblock %}</h1></span>
     <div class="content">
         {% for cart in carts %}
             <div class="cart">
-                <p><b>#{{ cart.id }}</b></p>
+<!--                <p><b>#{{ cart.id }}</b></p>-->
                 <p class="title">
-                    <p><b> Product Id:{{ cart.product_id }} </b></p>
+<!--                    <p><b> Product Id:{{ cart.product_id }}-->
+                    </b></p>
                     <b>
                         <a href="#">
-                            {{ products[cart.product_id] }}
+                            {{ products[cart.product_id-1] }}
                         </a>
                         <br/>
                     </b>
                 </p>
                 <div class="content">
-                    <p>Customer ID: {{ cart.customer_id }}</p>
-                    <p>Customer : {{ customers[ cart.customer_id] }}</p>
+                    <p> {{ "$%.2f"|format(products[cart.product_id-1].price) }}</p>
+<!--                    <p>Customer ID: {{ cart.customer_id }}</p>-->
                     <p>Quantity: {{ cart.quantity }}</p>
                 </div>
                 <hr>
