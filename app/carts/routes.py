@@ -1,4 +1,4 @@
-from flask import render_template, flash
+from flask import render_template, flash, redirect, url_for
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import functions
 from app.carts import bp
@@ -82,6 +82,24 @@ def add_the_same(id):
         total = update_total(carts, products)
         return render_template('carts/customers_cart.html', carts=carts, products=products, total=total)
 
+
+@bp.route('/cart/reduce_quantity/<int:id>')
+@login_required
+def reduce_quantity(id):
+    cart_to_update = Cart.query.get_or_404(id)
+    product = Product.query.filter_by(id=cart_to_update.product_id).first()
+
+    if cart_to_update.quantity > 1:
+        product.stock += 1
+        cart_to_update.quantity -= 1
+        db.session.commit()
+        flash(f"An item of {product} was removed")
+        carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+        products = Product.query.all()
+        total = update_total(carts, products)
+        return render_template('carts/customers_cart.html', carts=carts, products=products, total=total)
+    else:
+        return redirect(url_for('carts.remove_from_cart', id=cart_to_update.id))
 
 
 

@@ -37,7 +37,7 @@
                                <a href="{{ url_for('carts.add_the_same', id=cart.id) }}" class="btn btn-outline-success btn-sm">
                                     +
                                 </a>
-                               <a href="{{ url_for('carts.remove_from_cart', id=cart.id) }}" class="btn btn-outline-primary btn-sm">
+                               <a href="{{ url_for('carts.reduce_quantity', id=cart.id) }}" class="btn btn-outline-primary btn-sm">
                                     -
                                 </a>
                               <a href="{{ url_for('carts.remove_from_cart', id=cart.id) }}" class="btn btn-outline-danger btn-sm">
