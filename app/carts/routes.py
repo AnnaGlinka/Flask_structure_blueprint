@@ -8,6 +8,7 @@ from app.models.product import Product
 from app.models.customer import Customer
 from flask_login import login_required, current_user
 
+
 @bp.route('/')
 @login_required
 def index():
@@ -23,7 +24,7 @@ def index():
 def update_total(carts, products):
     total = 0
     for cart in carts:
-        total += products[cart.product_id - 1].price
+        total += (products[cart.product_id - 1].price * cart.quantity)
     return total
 
 
@@ -64,7 +65,6 @@ def remove_from_cart(id):
 def add_the_same(id):
     cart_to_update = Cart.query.get_or_404(id)
     product = Product.query.filter_by(id=cart_to_update.product_id).first()
-
 
     if product.stock > 0:
         product.stock -= 1

@@ -114,7 +114,7 @@ def delete_product(id):
 def update_total(carts, products):
     total = 0
     for cart in carts:
-        total += products[cart.product_id - 1].price
+        total += (products[cart.product_id - 1].price * cart.quantity)
     return total
 
 

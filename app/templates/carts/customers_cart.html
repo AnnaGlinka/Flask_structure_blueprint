@@ -23,7 +23,7 @@
                                 </a>
                             </div>
                             <div class="col">
-                              {{ "$%.2f"|format(products[cart.product_id-1].price) }}
+                              {{ "$%.2f"|format(products[cart.product_id-1].price * cart.quantity) }}
                             </div>
                         </div>
                         <br/>
