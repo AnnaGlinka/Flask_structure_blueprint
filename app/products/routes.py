@@ -111,19 +111,39 @@ def delete_product(id):
         return render_template("products/index.html", products=products)
 
 
+def update_total(carts, products):
+    total = 0
+    for cart in carts:
+        total += products[cart.product_id - 1].price
+    return total
+
+
 @bp.route('/product/add_to_cart/<int:id>', methods=['GET', 'POST'])
 @login_required
 def add_to_carts(id):
     product = Product.query.get_or_404(id)
-    cart = Cart(quantity=1, customer_id=current_user.id, product_id=product.id)
-    if product.stock > 0:
+    product_already_in_cart = Cart.query.filter_by(customer_id=current_user.id, product_id=id).first()
+    if product_already_in_cart and product.stock > 0:
+        flash(f"Product {product} already in Cart")
+        products = Product.query.order_by(Product.id)
+        product.stock -= 1
+        product_already_in_cart.quantity += 1
+        db.session.commit()
+        carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+        products = Product.query.all()
+        total = update_total(carts, products)
+        return render_template('carts/customers_cart.html', carts=carts, products=products, total=total)
+
+    elif product.stock > 0:
+        cart = Cart(quantity=1, customer_id=current_user.id, product_id=product.id)
         product.stock = product.stock - 1
         db.session.add(cart)
         db.session.commit()
         flash(f"Product added to your cart: {product}")
         carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
         products = Product.query.all()
-        return render_template('carts/customers_cart.html', carts=carts, products=products)
+        total = update_total(carts, products)
+        return render_template('carts/customers_cart.html', carts=carts, products=products, total=total)
     else:
         flash(f"Product {product} currently unavailable !!!")
         products = Product.query.order_by(Product.id)

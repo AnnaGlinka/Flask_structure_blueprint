@@ -10,32 +10,73 @@
     {% endfor %}
 
     <span class="title"><h1>{% block title %} Your cart {% endblock %}</h1></span>
+    <div class="shadow p-3 mb-5 bg-body rounded">
     <div class="content">
         {% for cart in carts %}
             <div class="cart">
-<!--                <p><b>#{{ cart.id }}</b></p>-->
-                <p class="title">
-<!--                    <p><b> Product Id:{{ cart.product_id }}-->
-                    </b></p>
+                <div class="container">
                     <b>
-                        <a href="#">
-                            {{ products[cart.product_id-1] }}
-                        </a>
+                       <div class="row">
+                            <div class="col">
+                                <a href="#">
+                                 {{ products[cart.product_id-1] }}
+                                </a>
+                            </div>
+                            <div class="col">
+                              {{ "$%.2f"|format(products[cart.product_id-1].price) }}
+                            </div>
+                        </div>
                         <br/>
                     </b>
                 </p>
-                <div class="content">
-                    <p> {{ "$%.2f"|format(products[cart.product_id-1].price) }}</p>
-<!--                    <p>Customer ID: {{ cart.customer_id }}</p>-->
-                    <p>Quantity: {{ cart.quantity }}</p>
-                    <a href="{{ url_for('carts.remove_from_cart', id=cart.id) }}" class="btn btn-outline-danger btn-sm">
-                    Remove product
-                </a>
-            </div>
+                    <div class="row">
+                            <div class="col">
+                                 <p>Quantity: {{ cart.quantity }}</p>
+                            </div>
+                            <div class="col">
+                               <a href="{{ url_for('carts.add_the_same', id=cart.id) }}" class="btn btn-outline-success btn-sm">
+                                    +
+                                </a>
+                               <a href="{{ url_for('carts.remove_from_cart', id=cart.id) }}" class="btn btn-outline-primary btn-sm">
+                                    -
+                                </a>
+                              <a href="{{ url_for('carts.remove_from_cart', id=cart.id) }}" class="btn btn-outline-danger btn-sm">
+                                    Remove product
+                                </a>
+                            </div>
+                        </div>
                 </div>
                 <hr>
 
             </div>
+
         {% endfor %}
+        </div>
+
     </div>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4>SUM</h4>
+        </div>
+        <div class="col">
+          <h4>{{ "$%.2f"|format(total) }}</h4>
+        </div>
+
+      </div>
+
+         <div class="row">
+        <div class="col">
+          <h4>SHIPPING</h4>
+        </div>
+        <div class="col">
+          <h4>$10.00</h4>
+        </div>
+
+      </div>
+    </div>
+
+
 {% endblock %}
