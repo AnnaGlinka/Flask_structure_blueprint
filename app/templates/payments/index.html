@@ -1,29 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <span class="title"><h1>{% block title %} The Payments Page {% endblock %}</h1></span>
+
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+
+    <span class="title"><h1>{% block title %} The payments list {% endblock %}</h1></span>
     <div class="content">
-        <h2>This is the payment Flask blueprint!</h2>
         {% for payment in payments %}
             <div class="post">
                 <p><b>#{{ payment.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
-                            {{ payment.amount }}
+                            Payment ${{ payment.amount }}
                         </a>
                     </b>
                 </p>
                 <div class="content">
-                    <p>{{ payment.customer_id }}</p>
+                    <p>Customer id: {{ payment.customer_id }}</p>
                 </div>
                  <div class="content">
-                    <p>{{ payment.payment_method }}</p>
+                    <p>Payment method: {{ payment.payment_method }}</p>
                 </div>
                  <div class="content">
-                    <p>{{ payment.orders }}</p>
+                    <p>Payment order: {{ payment.orders }}</p>
                 </div>
+                <div class="content">
+                    <p>Status: {{ payment.status }}</p>
+                </div>
+                  <a href="{{ url_for('payments.delete_payment', id=payment.id) }}" class="btn btn-outline-danger">Delete</a>
                 <hr>
+
             </div>
         {% endfor %}
     </div>

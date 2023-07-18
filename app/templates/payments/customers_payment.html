@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+   {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+           {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <span class="title"><h1>{% block title %} Your payment {% endblock %}</h1></span>
+    <div class="shadow p-3 mb-5 bg-body rounded">
+    <div class="content">
+
+            <div class="cart">
+                <div class="container">
+                    <b>
+                       <div class="row">
+                            <div class="col">
+                                <a href="#">
+                                 {{ payment.payment_method }}
+                                </a>
+                            </div>
+                            <div class="col">
+                              {{ "$%.2f"|format(payment.amount) }}
+                            </div>
+                        </div>
+                        <br/>
+                    </b>
+                </p>
+                    <div class="row">
+                            <div class="col">
+                                 <p>Status: {{ payment.status }}</p>
+                            </div>
+                            <div class="col">
+
+                              <a href="{{ url_for('payments.update_payment')}}" class="btn btn-outline-danger btn-sm">
+                                    Choose another method
+                                </a>
+                            </div>
+                        </div>
+                </div>
+                <hr>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    </div>
+
+
+{% endblock %}

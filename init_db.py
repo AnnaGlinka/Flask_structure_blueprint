@@ -73,27 +73,32 @@ cust4 = Customer(first_name="Michal",
                  phone_number="1534334444")
 
 # Create Payments ----------------------------------------------------
-payment1 = Payment(payment_method="cash", amount=100, customer_id=1)
-payment2 = Payment(payment_method="credit card", amount=200, customer_id=2)
-payment3 = Payment(payment_method="credit card", amount=200, customer_id=4)
+payment1 = Payment(payment_method="cash", amount=100, status="Pending", customer_id=1)
+payment2 = Payment(payment_method="credit card", amount=200, status="Pending", customer_id=2)
+payment3 = Payment(payment_method="credit card", amount=200, status="Pending", customer_id=4)
 
 # Create Shipment ----------------------------------------------------------
 
 ship1 = Shipment(country="Poland", city="Cracow", postal_code="30-313",
                  street="Makowskiego", house_number=23, apartment_number=4,
+                 shipment_cost=10, status="Pending",
                  customer_id=1)
 
 ship2 = Shipment(country="Poland", city="Warsaw", postal_code="10-113",
                  street="Warszawska", house_number=123, apartment_number=66,
+                 shipment_cost=10, status="Pre-Transit",
                  customer_id=2)
 
 ship3 = Shipment(country="Germany", city="Hamburg", postal_code="100-13",
                  street="Havelstrasse", house_number=13, apartment_number=76,
+                 shipment_cost=10, status="Out for deliver",
                  customer_id=3)
 
 ship4 = Shipment(country="Poland", city="Warsaw", postal_code="100-13",
                  street="Kolorowa", house_number=123, apartment_number=676,
+                 shipment_cost=10, status="In Transit",
                  customer_id=4)
+
 
 # Create Orders ----------------------------------------------------
 ord1 = Order(total_price="100", status="Pending", customer_id=1, payment_id=1, shipment_id=1)

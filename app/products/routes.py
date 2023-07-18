@@ -55,7 +55,6 @@ def show_product(id):
 @login_required
 def edit_product(id):
     product = Product.query.get_or_404(id)
-    product_to_delete = Product.query.get_or_404(id)
     admin_email = current_user.email
     if admin_email == 'aglinka8@gmail.com':
         form = ProductForm()

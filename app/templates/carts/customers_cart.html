@@ -66,13 +66,15 @@
         </div>
 
       </div>
-
+        <br/>
          <div class="row">
         <div class="col">
-          <h4>SHIPPING</h4>
+
         </div>
         <div class="col">
-          <h4>$10.00</h4>
+          <h4> <a href="{{ url_for('payments.create_payment', sum=total) }}" class="btn btn-outline-primary btn-lg">
+                                    Order now
+                                </a></h4>
         </div>
 
       </div>

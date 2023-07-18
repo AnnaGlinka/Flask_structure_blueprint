@@ -8,7 +8,7 @@ class OrderItem(db.Model):
     price = db.Column(db.Float, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-    # primarykey do order id usuniete
+
 
     def __repr__(self):
         return f'<OrderItem "{self.id}">'

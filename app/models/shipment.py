@@ -11,7 +11,12 @@ class Shipment(db.Model):
     street = db.Column(db.String(120), nullable=False)
     house_number = db.Column(db.String(20), nullable=False)
     apartment_number = db.Column(db.String(20))
+    shipment_cost = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(120), nullable=False)
+
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+
+
     #
     # # one-to-many, mandatory
     orders = db.relationship('Order', backref='shipment')
