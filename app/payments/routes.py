@@ -36,7 +36,7 @@ def create_payment(sum):
 
         # Clear the form
         form.payment_method.data = ''
-        return render_template('shipments/add_payment.html', form=form)
+        return render_template('shipments/add_shipment.html', form=form)
     else:
         flash("The payments is already created")
         return redirect(url_for('payments.review_payment'))
@@ -59,7 +59,7 @@ def update_payment():
         payment_to_update.payment_method = form.payment_method.data
         db.session.add(payment_to_update)
         db.session.commit()
-        flash("Payment has been updated")
+        # flash("Payment has been updated")
         return redirect(url_for('shipments.add_shipment'))
 
     return render_template('payments/add_payment.html', form=form)

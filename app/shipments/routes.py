@@ -14,13 +14,53 @@ def index():
     return render_template('shipments/index.html', shipments=shipments)
 
 
+# @bp.route('/add_shipment', methods=['GET', 'POST'])
+# @login_required
+# def add_shipment():
+#     form = ShipmentForm()
+#
+#     if form.validate_on_submit():
+#         shipment_created = Shipment.query.filter_by(customer_id=current_user.id, status='Created').first()
+#         if shipment_created is None:
+#             shipment = Shipment(
+#                 country=form.country.data,
+#                 city=form.city.data,
+#                 postal_code=form.postal_code.data,
+#                 street=form.street.data,
+#                 house_number=form.house_number.data,
+#                 apartment_number=form.apartment_number.data,
+#                 shipment_cost=shipping_cost,
+#                 status="Created",
+#                 customer_id=current_user.id
+#             )
+#             db.session.add(shipment)
+#             db.session.commit()
+#             flash("New shipment added successfully")
+#             #return redirect(url_for('orders.create_order'))
+#
+#         else:
+#             flash("The shipment is already created")
+#             return redirect(url_for('shipments.edit_shipment'))
+#
+#
+#
+#     form.country.data = ''
+#     form.city.data = ''
+#     form.postal_code.data = ''
+#     form.street.data = ''
+#     form.house_number.data = ''
+#     form.apartment_number.data = ''
+#
+#     return render_template('shipments/add_shipment.html', form=form)
+
+
 @bp.route('/add_shipment', methods=['GET', 'POST'])
 @login_required
 def add_shipment():
     form = ShipmentForm()
-    shipment_created = Shipment.query.filter_by(customer_id=current_user.id, status='Created').first()
-    if not shipment_created:
-        if form.validate_on_submit():
+    if form.validate_on_submit():
+        shipment_created = Shipment.query.filter_by(customer_id=current_user.id).first()
+        if shipment_created is None:
             shipment = Shipment(
                 country=form.country.data,
                 city=form.city.data,
@@ -34,24 +74,22 @@ def add_shipment():
             )
             db.session.add(shipment)
             db.session.commit()
-            flash("New shipment added successfully")
-
+            flash("Shipment added successfully")
+            return redirect(url_for('orders.review_order'))
         else:
-            flash("Please fill the form")
-
-        # Clear the form
+            flash("This shipment already exists!")
+            return redirect(url_for('shipments.edit_shipment'))
         form.country.data = ''
         form.city.data = ''
         form.postal_code.data = ''
         form.street.data = ''
         form.house_number.data = ''
         form.apartment_number.data = ''
-        #return render_template('shipments/add_shipment.html', form=form)
-        return redirect(url_for('orders.create_order'))
-
     else:
-        flash("The shipment is already created")
-        return redirect(url_for('shipments.edit_shipment'))
+        if form.errors:
+            flash("Validation error: " + str(form.errors))
+
+    return render_template('shipments/add_shipment.html', form=form)
 
 
 @bp.route('/edit_shipment', methods=['GET', 'POST'])
@@ -67,22 +105,27 @@ def edit_shipment():
             shipment_to_update.country = form.country.data
             shipment_to_update.city = form.city.data
             shipment_to_update.postal_code = form.postal_code.data
+            shipment_to_update.street = form.street.data
             shipment_to_update.house_number = form.house_number.data
             shipment_to_update.apartment_number = form.apartment_number.data
 
             db.session.add(shipment_to_update)
             db.session.commit()
             flash("Shipment has been updated")
-            return render_template('shipments/edit_shipment.html', form=form)
-        else:
-            flash("Fill the form")
-            return render_template('shipments/edit_shipment.html', form=form)
+            return redirect(url_for('orders.review_order'))
+        # else:
+        #     flash("Fill the form")
+        #     return render_template('shipments/edit_shipment.html', form=form)
 
-        shipment_to_update.country = form.country.data
-        shipment_to_update.city = form.city.data
-        shipment_to_update.postal_code = form.postal_code.data
-        shipment_to_update.house_number = form.house_number.data
-        shipment_to_update.apartment_number = form.apartment_number.data
+        form.country.data = shipment_to_update.country
+        form.city.data = shipment_to_update.city
+        form.postal_code.data = shipment_to_update.postal_code
+        form.street.data = shipment_to_update.street
+        form.house_number.data = shipment_to_update.house_number
+        form.apartment_number.data = shipment_to_update.apartment_number
+
+        return render_template('shipments/edit_shipment.html', form=form)
+
     else:
         flash("Shipment cannot been updated")
         return render_template('shipments/index.html')
