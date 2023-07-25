@@ -9,12 +9,95 @@
         </div>
     {% endfor %}
 
-
     <span class="title"><h1>{% block title %} Please review your order {% endblock %}</h1></span>
+
+
     <div class="content">
         <br/>
 
-             <h4>Order Details</h4>
+        <h4>Cart Details</h4>
+             <div class="shadow p-3 mb-5 bg-body rounded">
+                 <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                         {% for cart in carts %}
+                              <td>
+                                  <a href="#">{{ products[cart.product_id-1] }}</a>
+                              </td>
+                              <td>{{ cart.quantity }}</td>
+                              <td>{{ "$%.2f"|format(products[cart.product_id-1].price * cart.quantity) }}</td>
+                            </tr>
+                       {% endfor %}
+
+                  </tbody>
+                </table>
+                 <a href="{{ url_for('carts.show_user_carts') }}" class="btn btn-outline-secondary">
+                                    Update
+                                </a>
+
+                </div>
+            </div>
+
+            <h4>Payment </h4>
+             <div class="shadow p-3 mb-5 bg-body rounded">
+                <p class="title">
+                    <b>
+                        <a href="#">
+                            ID No: {{  payment.id  }}
+                        </a>
+                    </b>
+                </p>
+                <div class="content">
+                     <p>Creation Date: {{ payment.payment_date }}</p>
+                    <p> Customer Id: {{ payment.customer_id }}</p>
+                    <p> Status: {{ payment.status }}</p>
+                    <p>Price: ${{ payment.amount }}</p>
+                    <p><b>Method: </b>{{ payment.payment_method }}</p>
+
+                </div>
+                  <a href="{{ url_for('payments.update_payment') }}" class="btn btn-outline-secondary">
+                                    Select different method
+                  </a>
+            </div>
+
+
+             <h4>Shipment Details</h4>
+             <div class="shadow p-3 mb-5 bg-body rounded">
+                <p>Creation Date: {{ shipment.shipment_date }}</p>
+                <p class="title">
+                    <b>
+                        <a href="#">
+                            ID No: {{  shipment.id  }}
+                        </a>
+                    </b>
+                </p>
+                <div class="content">
+
+                    <p> Status: {{ shipment.status }}</p>
+                    <p> Shipment cost: {{ shipment.shipment_cost }}</p>
+                    <p> Country: {{ shipment.country }}</p>
+                    <p> City: {{ shipment.city }}</p>
+                    <p> Postal Code: {{ shipment.postal_code }}</p>
+                    <p> Street: {{ shipment.street }}</p>
+                    <p> House No: {{ shipment.house_number }}</p>
+                    <p> Apartment No: {{ shipment.apartment_number }}</p>
+
+                </div>
+                   <a href="{{ url_for('shipments.edit_shipment') }}" class="btn btn-outline-secondary">
+                                    Update shipment details
+                  </a>
+            </div>
+
+
+
+         <h4>Order Details</h4>
              <div class="shadow p-3 mb-5 bg-body rounded">
                 <p>Creation Date: {{ order.date_created }}</p>
                 <p class="title">
@@ -30,49 +113,13 @@
                     <p> Customer ID: {{ order.customer_id }}</p>
                     <p> Payment ID: {{ order.payment_id }}</p>
                     <p> Shipment ID: {{ order.shipment_id }}</p>
+                    <p> Total: ${{ order.total_price }}</p>
                 </div>
             </div>
 
-             <h4>Shipment Details</h4>
-             <div class="shadow p-3 mb-5 bg-body rounded">
-                <p>Creation Date: {{ shipment.shipment_date }}</p>
-                <p class="title">
-                    <b>
-                        <a href="#">
-                            ID No: {{  shipment.id  }}
-                        </a>
-                    </b>
-                </p>
-                <div class="content">
-                    <p> Country: {{ shipment.country }}</p>
-                    <p> City: {{ shipment.city }}</p>
-                    <p> Postal Code: {{ shipment.postal_code }}</p>
-                    <p> Street: {{ shipment.street }}</p>
-                    <p> House No: {{ shipment.house_number }}</p>
-                    <p> Apartment No: {{ shipment.apartment_number }}</p>
-                    <p> Status: {{ shipment.status }}</p>
-                    <p> Shipment cost: {{ shipment.shipment_cost }}</p>
-
-                </div>
-            </div>
-
-         <h4>Payment </h4>
-             <div class="shadow p-3 mb-5 bg-body rounded">
-                <p>Creation Date: {{ payment.payment_date }}</p>
-                <p class="title">
-                    <b>
-                        <a href="#">
-                            ID No: {{  payment.id  }}
-                        </a>
-                    </b>
-                </p>
-                <div class="content">
-                    <p> Customer Id: {{ payment.customer_id }}</p>
-                    <p> Status: {{ payment.status }}</p>
-                    <p><b>Price: ${{ payment.amount }}</b></p>
-
-                </div>
-            </div>
+   <a href="{{ url_for('orders.order_with_obligation_to_pay') }}" class="btn btn-outline-danger">
+                             Order with obligation to pay
+                  </a>
 
     </div>
 {% endblock %}

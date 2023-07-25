@@ -1,5 +1,7 @@
 from datetime import datetime
 from app.extensions import db
+from app.models.product import Product
+from app.extensions import db
 
 
 class OrderItem(db.Model):
@@ -12,3 +14,7 @@ class OrderItem(db.Model):
 
     def __repr__(self):
         return f'<OrderItem "{self.id}">'
+
+    def get_product_name(self, prod_id: int) -> str:
+        product = Product.query.filter_by(id=prod_id).first()
+        return product.name

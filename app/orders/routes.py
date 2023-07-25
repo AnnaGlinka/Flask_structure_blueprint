@@ -5,6 +5,9 @@ from app.orders import bp
 from app.models.order import Order
 from app.models.shipment import Shipment
 from app.models.payment import Payment
+from app.models.cart import Cart
+from app.models.product import Product
+from app.models.order_item import OrderItem
 from flask_login import login_required, current_user
 
 @bp.route('/')
@@ -12,20 +15,6 @@ from flask_login import login_required, current_user
 def index():
     orders = Order.query.all()
     return render_template('orders/index.html', orders=orders)
-
-
-# @bp.route('/create_order')
-# @login_required
-# def create_order():
-#     order = Order(total_price=100,
-#                   status="Created",
-#                   customer_id=current_user.id,
-#                   payment_id="dummy",
-#                   shipment_id="dummy"
-#                   )
-#     db.session.add(order)
-#     db.session.commit()
-#     flash("New order created")
 
 
 
@@ -54,24 +43,68 @@ def delete_order(id):
         return render_template("orders/index.html", orders=orders)
 
 
+def update_total(carts, products):
+    total = 0
+    for cart in carts:
+        total += (products[cart.product_id - 1].price * cart.quantity)
+    return total
+
 @bp.route('/review_order')
 @login_required
 def review_order():
 
     order_created = Order.query.filter_by(customer_id=current_user.id, status='Created').first()
+    payment = Payment.query.filter_by(customer_id=current_user.id, status='Created').first()
+    shipment = Shipment.query.filter_by(customer_id=current_user.id, status='Created').first()
+
     if order_created is None:
-        order = Order(total_price=100,
+        order = Order(total_price=payment.amount,
                       status="Created",
                       customer_id=current_user.id,
-                      payment_id="dummy",
-                      shipment_id="dummy"
+                      payment_id=payment.id,
+                      shipment_id=shipment.id
                       )
         db.session.add(order)
         db.session.commit()
 
     order = Order.query.filter_by(customer_id=current_user.id, status='Created').first()
-    shipment = Shipment.query.filter_by(customer_id=current_user.id).first()
-    payment = Payment.query.filter_by(customer_id=current_user.id).first()
 
-    return render_template('orders/review_order.html', order=order, shipment=shipment, payment=payment)
+    carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+    products = Product.query.all()
+    total = update_total(carts, products)
+
+    return render_template('orders/review_order.html',
+                           order=order,
+                           shipment=shipment,
+                           payment=payment,
+                           carts=carts,
+                           products=products,
+                           total=total)
+
+
+@bp.route('/order_and_pay')
+@login_required
+def order_with_obligation_to_pay():
+    order = Order.query.filter_by(customer_id=current_user.id, status='Created').first()
+    carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+
+    order_items_created = OrderItem.query.filter(OrderItem.order_id == order.id).all()
+    if not order_items_created:
+        for cart in carts:
+            product = Product.query.filter_by(id=cart.product_id).first()
+            order_item = OrderItem(quantity=cart.quantity,
+                                   price=product.price,
+                                   product_id=cart.product_id,
+                                   order_id=order.id
+                                   )
+            db.session.add(order_item)
+
+        db.session.commit()
+
+    order_items = OrderItem.query.filter(OrderItem.order_id == order.id).all()
+    return render_template('orders/order.html', order=order, order_items=order_items)
+
+
+
+
 

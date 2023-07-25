@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+           {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <span class="title"><h1>{% block title %} Order No {{  order.id  }} created {% endblock %}</h1></span>
+    <div class="content">
+        <br/>
+
+            <div class="post">
+                <p><b>Date: {{ order.date_created }}</b></p>
+                <p class="title">
+                </p>
+                <div class="content">
+                    <p> Status: {{ order.status }}</p>
+                    <p> Customer ID: {{ order.customer_id }}</p>
+                    <p> Payment ID: {{ order.payment_id }}</p>
+                    <p> Shipment ID: {{ order.shipment_id }}</p>
+                </div>
+
+                <hr>
+            </div>
+
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Order Item ID</th>
+              <th scope="col">Product</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price per item</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for order_item in order_items %}
+            <tr>
+              <th scope="row">{{ order_item.id }}</th>
+              <td>{{ order_item.get_product_name(order_item.product_id) }}</td>
+              <td>{{ order_item.quantity }}</td>
+              <td> ${{ order_item.price }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+    </div>
+{% endblock %}

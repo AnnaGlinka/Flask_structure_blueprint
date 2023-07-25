@@ -1,22 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <span class="title"><h1>{% block title %} The Order Items Page {% endblock %}</h1></span>
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+           {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <span class="title"><h1>{% block title %} Order Items {% endblock %}</h1></span>
     <div class="content">
-        <h2>This is the order items Flask blueprint!</h2>
         {% for order_item in order_items %}
             <div class="post">
-                <p><b>#{{ order_item.id }}</b></p>
+                <p><b>ID: {{ order_item.id }}</b></p>
                 <p class="title">
                     <b>
                         <a href="#">
-                            {{ order_item.quantity }}
+                            Quantity: {{ order_item.quantity }}
                         </a>
                     </b>
                 </p>
                 <div class="content">
-                    <p>{{ order_item.product_id }}</p>
+                    <p>Product ID: {{ order_item.product_id }}</p>
+                     <p>Price: {{ order_item.price }}</p>
                 </div>
+                <a href="{{ url_for('order_items.delete_order_item', id=order_item.id) }}" class="btn btn-outline-danger btn-sm">
+                    Delete
+                </a>
                 <hr>
             </div>
         {% endfor %}

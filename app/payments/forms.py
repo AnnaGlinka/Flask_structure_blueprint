@@ -8,7 +8,7 @@ class PaymentForm(FlaskForm):
                                  choices=['American Express',
                                           'Apple Pay',
                                           'Mastercard',
-                                          'PyuPal',
+                                          'PayPal',
                                           'VISA',
                                           'Wire transfer'],
                                  validators=[InputRequired()])

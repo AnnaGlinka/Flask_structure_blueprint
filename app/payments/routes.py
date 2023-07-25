@@ -2,6 +2,9 @@ from flask import render_template, flash, redirect, url_for
 from app.payments import bp
 from app.extensions import db
 from app.models.payment import Payment
+from app.models.cart import Cart
+from app.models.product import Product
+from app.models.shipment import Shipment
 from flask_login import login_required, current_user
 from app.payments.forms import PaymentForm
 from sqlalchemy.exc import IntegrityError
@@ -13,12 +16,39 @@ def index():
     return render_template('payments/index.html', payments=payments)
 
 
+def update_total(carts, products):
+    total = 0
+    for cart in carts:
+        total += (products[cart.product_id - 1].price * cart.quantity)
+    return total
+
+
+def update_payment_sum(payment):
+    carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
+    products = Product.query.all()
+    total = update_total(carts, products)
+    payment.amount = total
+    db.session.add(payment)
+    db.session.commit()
+
+
+
 @bp.route('/create_payment/<int:sum>', methods=['GET', 'POST'])
 @login_required
 def create_payment(sum):
 
     payment_created = Payment.query.filter_by(customer_id=current_user.id, status='Created').first()
-    if not payment_created:
+    shipment_created = Shipment.query.filter_by(customer_id=current_user.id, status='Created').first()
+
+    if payment_created and shipment_created:
+        update_payment_sum(payment_created)
+        return redirect(url_for('orders.review_order'))
+
+    if payment_created and not shipment_created:
+        update_payment_sum(payment_created)
+        return redirect(url_for('shipments.add_shipment'))
+
+    else:
         form = PaymentForm()
         if form.validate_on_submit():
             payment = Payment(payment_method=form.payment_method.data,
@@ -37,9 +67,6 @@ def create_payment(sum):
         # Clear the form
         form.payment_method.data = ''
         return render_template('shipments/add_shipment.html', form=form)
-    else:
-        flash("The payments is already created")
-        return redirect(url_for('payments.review_payment'))
 
 
 
@@ -60,7 +87,7 @@ def update_payment():
         db.session.add(payment_to_update)
         db.session.commit()
         # flash("Payment has been updated")
-        return redirect(url_for('shipments.add_shipment'))
+        return redirect(url_for('orders.review_order'))
 
     return render_template('payments/add_payment.html', form=form)
 
