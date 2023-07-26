@@ -98,6 +98,7 @@ def order_with_obligation_to_pay():
                                    order_id=order.id
                                    )
             db.session.add(order_item)
+            db.session.delete(cart)
 
         db.session.commit()
 

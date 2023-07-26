@@ -103,6 +103,33 @@ def reduce_quantity(id):
 
 
 
+@bp.route('/delete_cart/<int:id>')
+@login_required
+def delete_cart(id):
+    cart_to_delete = Cart.query.get_or_404(id)
+    admin_email = current_user.email
+    if admin_email == 'aglinka8@gmail.com':
+
+        try:
+            db.session.delete(cart_to_delete)
+            db.session.commit()
+            flash("Cart was deleted")
+            carts = Cart.query.order_by(Cart.id)
+            return render_template("carts/index.html", carts=carts)
+
+        except IntegrityError:
+            db.session.rollback()
+            flash("The cart cannot be deleted!")
+            carts = Cart.query.order_by(Cart.id)
+            return render_template("carts/index.html", carts=carts)
+
+    else:
+        flash("You are not authorized to delete carts!")
+        carts = Cart.query.order_by(Cart.id)
+        return render_template("carts/index.html", carts=carts)
+
+
+
 
 
 
