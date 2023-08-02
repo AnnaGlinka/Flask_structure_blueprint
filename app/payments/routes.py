@@ -150,6 +150,8 @@ def add_credit_card_details():
         flash(response.headers)
 
         flash(balance)
+        response = requests.get('https://dummypay.io/card/6486218849829144').json()
+        flash(response)
 
         form.card_number.data = ''
         form.card_Cvv.data = ''
