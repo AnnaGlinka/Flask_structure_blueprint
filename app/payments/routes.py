@@ -1,3 +1,4 @@
+import requests
 from flask import render_template, flash, redirect, url_for
 from app.payments import bp
 from app.extensions import db
@@ -6,7 +7,7 @@ from app.models.cart import Cart
 from app.models.product import Product
 from app.models.shipment import Shipment
 from flask_login import login_required, current_user
-from app.payments.forms import PaymentForm
+from app.payments.forms import PaymentForm, CreditCartForm
 from sqlalchemy.exc import IntegrityError
 
 @bp.route('/')
@@ -30,7 +31,6 @@ def update_payment_sum(payment):
     payment.amount = total
     db.session.add(payment)
     db.session.commit()
-
 
 
 @bp.route('/create_payment/<int:sum>', methods=['GET', 'POST'])
@@ -69,7 +69,6 @@ def create_payment(sum):
         return render_template('shipments/add_shipment.html', form=form)
 
 
-
 @bp.route('/payment')
 @login_required
 def review_payment():
@@ -90,7 +89,6 @@ def update_payment():
         return redirect(url_for('orders.review_order'))
 
     return render_template('payments/add_payment.html', form=form)
-
 
 
 @bp.route('/payment/<int:id>')
@@ -118,6 +116,51 @@ def delete_payment(id):
         flash("You are not authorized to delete categories!")
         payments = Payment.query.order_by(Payment.id)
         return render_template("payments/index.html", payments=payments)
+
+
+@bp.route('/credit_card_details', methods=['GET', 'POST'])
+@login_required
+def add_credit_card_details():
+    payment = Payment.query.filter_by(customer_id=current_user.id, status='Created').first()
+    form = CreditCartForm()
+    if form.validate_on_submit():
+
+        headers = {
+            'Content-Type': 'application/json',
+        }
+
+        json_data = {
+            'type': 'card',
+            'cardNumber': form.card_number.data,
+            'cardCvv': form.card_Cvv.data,
+            'cardExpMonth': form.card_exp_month.data,
+            'cardExpYear': form.card_exp_year.data,
+            'amount': str(payment.amount),
+        }
+
+        response = requests.post('https://dummypay.io/pay', headers=headers, json=json_data)
+
+        endpoint = 'https://dummypay.io/card/' + 'form.card_number.data'
+        response = requests.get(endpoint)
+        balance = response.text
+
+        flash("Successful Credit Card Validation!")
+        flash(response.status_code)
+        flash(response.reason)
+        flash(response.headers)
+
+        flash(balance)
+
+        form.card_number.data = ''
+        form.card_Cvv.data = ''
+        form.card_exp_month.data = ''
+        form.card_exp_year.data = ''
+    else:
+        if form.errors:
+            for e in form.errors:
+                flash("Validation error: " + str(e))
+
+    return render_template('payments/credit_card_details.html', form=form)
 
 
 

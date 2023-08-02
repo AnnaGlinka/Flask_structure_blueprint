@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+ <h1>Credit Card Details</h1>
+    <br/>
+<div class="shadow p-3 mb-5 bg-body rounded">
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.card_number.label(class="form-label") }}
+        {{ form.card_number(class="form-control") }}
+        {{ form.card_Cvv.label(class="form-label") }}
+        {{ form.card_Cvv(class="form-control") }}
+        {{ form.card_exp_month.label(class="form-label") }}
+        {{ form.card_exp_month(class="form-control") }}
+        {{ form.card_exp_year.label(class="form-label") }}
+        {{ form.card_exp_year(class="form-control") }}
+
+        <br/>
+
+        {{ form.submit(class="btn btn-secondary") }}
+
+         <a href="{{ url_for('payments.review_payment') }}" class="btn btn-outline-danger">Back</a>
+
+    </form>
+</div>
+
+
+
+</div>
+{% endblock %}

@@ -11,10 +11,10 @@ class OrderItem(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
 
-
     def __repr__(self):
         return f'<OrderItem "{self.id}">'
 
-    def get_product_name(self, prod_id: int) -> str:
+    @staticmethod
+    def get_product_name(prod_id: int) -> str:
         product = Product.query.filter_by(id=prod_id).first()
         return product.name

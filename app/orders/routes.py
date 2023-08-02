@@ -87,7 +87,6 @@ def review_order():
 def order_with_obligation_to_pay():
     order = Order.query.filter_by(customer_id=current_user.id, status='Created').first()
     carts = Cart.query.filter(Cart.customer_id == current_user.id).all()
-
     order_items_created = OrderItem.query.filter(OrderItem.order_id == order.id).all()
     if not order_items_created:
         for cart in carts:

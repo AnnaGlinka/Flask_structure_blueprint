@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, RadioField, SelectField, IntegerField
-from wtforms.validators import DataRequired, InputRequired, NumberRange
+from wtforms.validators import DataRequired, InputRequired, NumberRange, Regexp
 
 
 class PaymentForm(FlaskForm):
@@ -15,19 +15,18 @@ class PaymentForm(FlaskForm):
 
 
 class CreditCartForm(FlaskForm):
-    card_number = IntegerField('Number', validators=[NumberRange(min=16, max=16, message="wrong number"),
-                                                     DataRequired()])
-    card_Cvv = IntegerField("CVV", validators=[NumberRange(min=4, max=4, message="wrong number"),
-                                               DataRequired()])
+    # https://www.makeuseof.com/regex-validate-credit-card-numbers/
+    # Visa - valid 4539890694174109
+    number_reg = "4[0-9]{12}(?:[0-9]{3})?$"
+    card_number = StringField('Number', validators=[DataRequired(), Regexp(number_reg,
+                                                                           message="wrong credit card number")])
+    card_Cvv = StringField("CVV", validators=[DataRequired(), Regexp('^[0-9]{3,4}$', message="wrong CVV card number")])
     card_exp_month = SelectField('Exp Month',
                                  choices=['01', '02', '03', '04', '05', '06',
                                           '07', '08', '09', '10', '11', '12'],
                                  validators=[InputRequired()])
 
     year_to_select = [x for x in range(2023, 2050)]
-
-    street = StringField("Street", validators=[DataRequired()])
-    house_number = StringField("House number", validators=[DataRequired()])
-    apartment_number = StringField("Apartment number", validators=[DataRequired()])
+    card_exp_year = SelectField('Exp Year', choices=year_to_select, validators=[InputRequired()])
 
     submit = SubmitField("Submit", validators=[DataRequired()])
