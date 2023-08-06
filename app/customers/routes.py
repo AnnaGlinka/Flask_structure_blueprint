@@ -6,6 +6,7 @@ from app.models.cart import Cart
 from app.customers.forms import CustomerForm
 from app.customers.forms import PasswordForm
 from app.customers.forms import LoginForm
+from app.products.forms import SearchProductForm
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -16,6 +17,13 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 def index():
     customers = Customer.query.all()
     return render_template('customers/index.html', customers=customers)
+
+
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
+
 
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -82,6 +90,7 @@ def update_user(id):
 def show_customer(id):
     customer = Customer.query.get_or_404(id)
     return render_template('customers/customer.html', customer=customer)
+
 
 
 @bp.route('/customer/delete/<int:id>')

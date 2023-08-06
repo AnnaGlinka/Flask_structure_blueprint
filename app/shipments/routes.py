@@ -3,6 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from app.shipments import bp
 from app.extensions import db
 from app.models.shipment import Shipment
+from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
 from app.shipments.forms import ShipmentForm
 
@@ -13,6 +14,10 @@ def index():
     shipments = Shipment.query.all()
     return render_template('shipments/index.html', shipments=shipments)
 
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
 
 
 @bp.route('/add_shipment', methods=['GET', 'POST'])

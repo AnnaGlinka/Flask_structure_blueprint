@@ -6,6 +6,7 @@ from app.extensions import db
 from app.models.cart import Cart
 from app.models.product import Product
 from app.models.customer import Customer
+from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
 
 
@@ -19,6 +20,12 @@ def index():
                            carts=carts,
                            products=products,
                            customers=customers)
+
+
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
 
 
 def update_total(carts, products):

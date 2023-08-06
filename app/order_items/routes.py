@@ -2,6 +2,7 @@ from flask import render_template, flash
 from app.order_items import bp
 from app.extensions import db
 from app.models.order_item import OrderItem
+from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
 from sqlalchemy.exc import IntegrityError
 
@@ -9,7 +10,13 @@ from sqlalchemy.exc import IntegrityError
 @login_required
 def index():
     order_items = OrderItem.query.all()
-    return render_template('order_items/contacts.html', order_items=order_items)
+    return render_template('order_items/index.html', order_items=order_items)
+
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
+
 
 
 @bp.route('/delete_order_item/<int:id>')

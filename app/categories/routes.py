@@ -6,6 +6,7 @@ from app.categories import bp
 from app.extensions import db
 from app.models.category import Category
 from app.categories.forms import CategoryForm
+from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
 
 
@@ -13,6 +14,11 @@ from flask_login import login_required, current_user
 def index():
     categories = Category.query.all()
     return render_template('categories/index.html', categories=categories)
+
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
 
 
 @bp.route('/add', methods=['GET', 'POST'])

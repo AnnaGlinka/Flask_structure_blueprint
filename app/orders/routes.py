@@ -7,6 +7,7 @@ from app.models.shipment import Shipment
 from app.models.payment import Payment
 from app.models.cart import Cart
 from app.models.product import Product
+from app.products.forms import SearchProductForm
 from app.models.order_item import OrderItem
 from flask_login import login_required, current_user
 
@@ -17,6 +18,10 @@ def index():
     order_items = OrderItem.query.all()
     return render_template('orders/index.html', orders=orders, order_items=order_items)
 
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
 
 
 @bp.route('/delete_order/<int:id>')

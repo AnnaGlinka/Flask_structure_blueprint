@@ -7,6 +7,7 @@ from app.models.cart import Cart
 from app.models.product import Product
 from app.models.shipment import Shipment
 from app.models.order import Order
+from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
 from app.payments.forms import PaymentForm, CreditCartForm
 from sqlalchemy.exc import IntegrityError
@@ -16,6 +17,12 @@ from sqlalchemy.exc import IntegrityError
 def index():
     payments = Payment.query.all()
     return render_template('payments/index.html', payments=payments)
+
+
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
 
 
 def update_total(carts, products):
