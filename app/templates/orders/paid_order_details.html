@@ -9,10 +9,8 @@
         </div>
     {% endfor %}
 
-    <span class="title"><h1>{% block title %} The Orders Page {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %} {% endblock %}</h1></span>
     <div class="content">
-
-        {% for order in orders %}
 
           <h1>Order No {{  order.id  }}</h1>
             <br/>
@@ -43,7 +41,6 @@
               </thead>
               <tbody>
               {% for order_item in order_items %}
-              {% if order_item.order_id == order.id %}
                 <tr>
                   <th scope="row">{{ order_item.id }}</th>
                   <td>{{ order_item.get_product_name(order_item.product_id) }}</td>
@@ -51,19 +48,13 @@
                   <td> ${{ order_item.price }}</td>
                 </tr>
 
-              {% endif %}
               {% endfor %}
+
           </tbody>
         </table>
 
 
+    </div>
 
-
-                 <a href="{{ url_for('orders.delete_order', id=order.id) }}" class="btn btn-outline-danger btn-sm">
-                Delete
-            </a>
-                <hr>
-            </div>
-        {% endfor %}
     </div>
 {% endblock %}

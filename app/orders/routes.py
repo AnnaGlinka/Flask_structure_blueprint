@@ -14,7 +14,8 @@ from flask_login import login_required, current_user
 @login_required
 def index():
     orders = Order.query.all()
-    return render_template('orders/index.html', orders=orders)
+    order_items = OrderItem.query.all()
+    return render_template('orders/index.html', orders=orders, order_items=order_items)
 
 
 
@@ -103,6 +104,13 @@ def order_with_obligation_to_pay():
 
     order_items = OrderItem.query.filter(OrderItem.order_id == order.id).all()
     return render_template('orders/order.html', order=order, order_items=order_items)
+
+
+@bp.route('/order/<int:id>')
+def show_ordered(id):
+    order = Order.query.get_or_404(id)
+    order_items = OrderItem.query.filter(OrderItem.order_id == order.id).all()
+    return render_template('orders/paid_order_details.html', order=order, order_items=order_items)
 
 
 

@@ -6,6 +6,7 @@ from app.models.payment import Payment
 from app.models.cart import Cart
 from app.models.product import Product
 from app.models.shipment import Shipment
+from app.models.order import Order
 from flask_login import login_required, current_user
 from app.payments.forms import PaymentForm, CreditCartForm
 from sqlalchemy.exc import IntegrityError
@@ -140,23 +141,29 @@ def add_credit_card_details():
 
         response = requests.post('https://dummypay.io/pay', headers=headers, json=json_data)
 
-        endpoint = 'https://dummypay.io/card/' + 'form.card_number.data'
+        endpoint = 'https://dummypay.io/card/' + str(form.card_number.data)
         response = requests.get(endpoint)
-        balance = response.text
 
-        flash("Successful Credit Card Validation!")
-        flash(response.status_code)
-        flash(response.reason)
-        flash(response.headers)
+        flash("Successful Credit Card Validation!" + " Response " + response.reason)
 
-        flash(balance)
-        response = requests.get('https://dummypay.io/card/6486218849829144').json()
-        flash(response)
+        response = requests.get('https://dummypay.io/card/' + form.card_number.data).json()
+        flash(response['balance'])
+
+        flash('Correct payment: ' + str(response['balance'] == payment.amount))
 
         form.card_number.data = ''
         form.card_Cvv.data = ''
         form.card_exp_month.data = ''
         form.card_exp_year.data = ''
+
+        order = Order.query.filter_by(customer_id=current_user.id, status='Created').first()
+        if order and (response['balance'] == payment.amount):
+            order.status = 'Order paid'
+            db.session.commit()
+            return render_template('orders/finalized_order_message.html', order=order)
+
+        else:
+            flash("Something wrong with your payment!")
     else:
         if form.errors:
             for e in form.errors:

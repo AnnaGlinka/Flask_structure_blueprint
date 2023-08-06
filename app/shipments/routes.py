@@ -14,45 +14,6 @@ def index():
     return render_template('shipments/index.html', shipments=shipments)
 
 
-# @bp.route('/add_shipment', methods=['GET', 'POST'])
-# @login_required
-# def add_shipment():
-#     form = ShipmentForm()
-#
-#     if form.validate_on_submit():
-#         shipment_created = Shipment.query.filter_by(customer_id=current_user.id, status='Created').first()
-#         if shipment_created is None:
-#             shipment = Shipment(
-#                 country=form.country.data,
-#                 city=form.city.data,
-#                 postal_code=form.postal_code.data,
-#                 street=form.street.data,
-#                 house_number=form.house_number.data,
-#                 apartment_number=form.apartment_number.data,
-#                 shipment_cost=shipping_cost,
-#                 status="Created",
-#                 customer_id=current_user.id
-#             )
-#             db.session.add(shipment)
-#             db.session.commit()
-#             flash("New shipment added successfully")
-#             #return redirect(url_for('orders.create_order'))
-#
-#         else:
-#             flash("The shipment is already created")
-#             return redirect(url_for('shipments.edit_shipment'))
-#
-#
-#
-#     form.country.data = ''
-#     form.city.data = ''
-#     form.postal_code.data = ''
-#     form.street.data = ''
-#     form.house_number.data = ''
-#     form.apartment_number.data = ''
-#
-#     return render_template('shipments/add_shipment.html', form=form)
-
 
 @bp.route('/add_shipment', methods=['GET', 'POST'])
 @login_required
