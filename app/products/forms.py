@@ -15,3 +15,8 @@ class ProductForm(FlaskForm):
         super(ProductForm, self).__init__()
         self.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
     submit = SubmitField("Submit", validators=[DataRequired()])
+
+
+class SearchProductForm(FlaskForm):
+    searched = StringField("Searched", validators=[DataRequired()])
+    submit = SubmitField("Submit")

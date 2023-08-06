@@ -3,7 +3,7 @@ from app.products import bp
 from app.extensions import db
 from app.models.product import Product
 from app.models.cart import Cart
-from app.products.forms import ProductForm
+from app.products.forms import ProductForm, SearchProductForm
 from flask_login import login_required, current_user
 
 
@@ -11,6 +11,28 @@ from flask_login import login_required, current_user
 def index():
     products = Product.query.all()
     return render_template('products/index.html', products=products)
+
+
+# Pass to the navbar
+@bp.context_processor
+def base():
+    form = SearchProductForm()
+    return dict(form=form)
+
+
+@bp.route('/search', methods=["POST"])
+def search():
+    form = SearchProductForm()
+    products = Product.query
+    if form.validate_on_submit():
+        product_searched = form.searched.data
+        products = products.filter(Product.description.like('%' + product_searched + '%'))
+        products = products.order_by(Product.id).all()
+        return render_template('products/show_searched_products.html',
+                               form=form,
+                               searched=product_searched,
+                               products=products)
+
 
 
 @bp.route('/add-product', methods=['GET', 'POST'])

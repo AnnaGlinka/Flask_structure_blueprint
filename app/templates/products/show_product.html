@@ -17,7 +17,7 @@
             <small>Product Id: {{  product.id }}</small><br/>
             <h4>{{ product.name }}</h4>
             {{ product.description }}<br/><br/>
-            ${{ product.price }}<br/>
+            {{ "$%.2f"|format(product.price) }}<br/>
             In stock: {{ product.stock }}<br/>
             Category: {{ product.category_id }}<br/>
 <!--            {{ product.order_item }}<br/>-->
