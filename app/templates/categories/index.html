@@ -14,21 +14,39 @@
        <br/>
 
         {% for category in categories %}
-            <div class="shadow p-3 mb-5 bg-body rounded">
-            <small>Category Id: {{  category.id }}</small><br/>
-            <h4>{{ category.name }}</h4>
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                         <small>Category Id: {{  category.id }}</small><br/>
+                        <small>Picture: {{  category.picture }}</small><br/>
+                        <h4>{{ category.name }}</h4>
 
-            <br/>
+                        <br/>
 
-            {% if current_user.email == 'aglinka8@gmail.com' %}
-             <a href="{{ url_for('categories.edit_category', id=category.id) }}" class="btn btn-outline-secondary btn-sm">
-                Edit
-            </a>
+                        {% if current_user.email == 'aglinka8@gmail.com' %}
+                         <a href="{{ url_for('categories.edit_category', id=category.id) }}" class="btn btn-outline-secondary btn-sm">
+                            Edit
+                        </a>
 
-              <a href="{{ url_for('categories.delete_category', id=category.id) }}" class="btn btn-outline-danger btn-sm">
-                Delete
-            </a>
-            {% endif %}
+                          <a href="{{ url_for('categories.delete_category', id=category.id) }}" class="btn btn-outline-danger btn-sm">
+                            Delete
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="col-6">
+                        {% if  category.picture %}
+                            <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="right">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="right">
+                        {% endif %}
+                    </div>
+            </div>
+            </div>
+
 
         <br/>
         </div>

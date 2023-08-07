@@ -1,13 +1,17 @@
 
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from sqlalchemy.exc import IntegrityError
 
+import app
 from app.categories import bp
 from app.extensions import db
 from app.models.category import Category
 from app.categories.forms import CategoryForm
 from app.products.forms import SearchProductForm
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 
 @bp.route('/')
@@ -52,9 +56,18 @@ def edit_category(id):
         form = CategoryForm()
         if form.validate_on_submit():
             category.name = form.name.data
-            # Update Database
-            db.session.add(category)
+            category.picture = request.files['picture']
+
+            # get image name
+            pic_filename = secure_filename(category.picture.filename)
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['picture']
+            # save the image
+
+            category.picture = pic_name
             db.session.commit()
+
+            saver.save(os.path.join("app/static/images/", pic_name))
             flash("Category has been updated")
             return redirect(url_for('categories.index', id=category.id))
 
