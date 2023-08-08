@@ -9,7 +9,7 @@
         </div>
     {% endfor %}
 
-    <span class="title"><h1>{% block title %} The Categories Page {% endblock %}</h1></span>
+    <span class="title"><h1>{% block title %} Product categories {% endblock %}</h1></span>
     <div class="content">
        <br/>
 
@@ -17,14 +17,26 @@
         <div class="shadow p-3 mb-5 bg-body rounded">
             <div class="container">
                 <div class="row">
+                    {% if current_user.email == 'aglinka8@gmail.com' %}
+
+                     <div class="col-4">
+                        {% if  category.picture %}
+                            <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="left">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="left">
+                        {% endif %}
+                    </div>
+
                     <div class="col-6">
+
                          <small>Category Id: {{  category.id }}</small><br/>
                         <small>Picture: {{  category.picture }}</small><br/>
                         <h4>{{ category.name }}</h4>
 
                         <br/>
 
-                        {% if current_user.email == 'aglinka8@gmail.com' %}
+
+
                          <a href="{{ url_for('categories.edit_category', id=category.id) }}" class="btn btn-outline-secondary btn-sm">
                             Edit
                         </a>
@@ -32,18 +44,37 @@
                           <a href="{{ url_for('categories.delete_category', id=category.id) }}" class="btn btn-outline-danger btn-sm">
                             Delete
                         </a>
-                        {% endif %}
-
-                    </div>
 
 
-                    <div class="col-6">
-                        {% if  category.picture %}
-                            <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="right">
                         {% else %}
-                            <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="right">
+
+                                 <div class="col-4">
+                                     <div class="row mt-5">
+                                    {% if  category.picture %}
+                                        <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="left">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="left">
+                                    {% endif %}
+
+                                     </div>
+                                     <div class="row mt-5">
+                                         <div class="text-center">
+                                            <h4>{{ category.name }}</h4>
+                                        </div>
+                                     </div>
+                                </div>
+
+                                <div class="col-2">
+
+
+                                <br/>
+
                         {% endif %}
+
                     </div>
+
+
+
             </div>
             </div>
 
@@ -52,5 +83,6 @@
         </div>
         <br/>
         {% endfor %}
+    </div>
     </div>
 {% endblock %}
