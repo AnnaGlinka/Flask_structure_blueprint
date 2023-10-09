@@ -32,7 +32,7 @@ def add_category():
     if form.validate_on_submit():
         category = Category.query.filter_by(name=form.name.data).first()
         if category is None:
-            category = Category(name=form.name.data)
+            category = Category(name=form.name.data, description=form.description.data)
             db.session.add(category)
             db.session.commit()
             flash("Category added successfully")
@@ -40,6 +40,8 @@ def add_category():
         else:
             flash("This category already exists!")
         form.name.data = ''
+        form.description.data = ''
+
     else:
         if form.errors:
             flash("Validation error: " + str(form.errors))

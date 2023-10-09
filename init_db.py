@@ -1,3 +1,6 @@
+
+# flask shell
+
 from app.extensions import db
 from app.models.category import Category
 from app.models.product import Product
@@ -12,9 +15,22 @@ db.drop_all()
 db.create_all()
 
 # Create Product Categories ------------------------------------------------
-cat1 = Category(name='Milk products')
-cat2 = Category(name='Fruit')
-cat3 = Category(name='Vegetables')
+cat1 = Category(name='Milk products', description='Lorem ipsum dolor sit amet, '
+                                                  'consetetur sadipscing elitr, '
+                                                  'sed diam nonumy eirmod tempor invidunt ut '
+                                                  'labore et dolore magna aliquyam erat, '
+                                                  'sed diam voluptua.')
+
+cat2 = Category(name='Fruit', description='Lorem ipsum dolor sit amet, '
+                                                  'consetetur sadipscing elitr, '
+                                                  'sed diam nonumy eirmod tempor invidunt ut '
+                                                  'labore et dolore magna aliquyam erat, '
+                                                  'sed diam voluptua.')
+cat3 = Category(name='Vegetables', description='Lorem ipsum dolor sit amet, '
+                                                  'consetetur sadipscing elitr, '
+                                                  'sed diam nonumy eirmod tempor invidunt ut '
+                                                  'labore et dolore magna aliquyam erat, '
+                                                  'sed diam voluptua.')
 
 # Create Products ----------------------------------------------------
 prod1 = Product(name="strawberry yogurt",

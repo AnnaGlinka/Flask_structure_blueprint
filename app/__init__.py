@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from config import Config
 from app.extensions import db
 from app.models.customer import Customer
+from flask_ckeditor import CKEditor
 
 
 def create_app(config_class=Config):
@@ -12,6 +13,8 @@ def create_app(config_class=Config):
 
     # Initialize Flask extensions here
     db.init_app(app)
+
+    ckeditor = CKEditor(app)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
