@@ -11,16 +11,16 @@
 
 
 <br/>
-<h2>Edit category...</h2>
+<h2>Edit picture...</h2>
 <br/>
 <div class="shadow p-3 mb5 bg-body rounded">
   <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+       {{ form.hidden_tag() }}
         {{ form.name.label(class="form-label") }}
         {{ form.name(class="form-control") }}
 
-        {{ form.description.label(class="form-label") }}
-        {{ form.description(class="form-control") }}
+        {{ form.picture.label(class="form-label") }}
+        {{ form.picture(class="form-control") }}
 
         <br/>
         {{ form.submit(class="btn btn-secondary") }}

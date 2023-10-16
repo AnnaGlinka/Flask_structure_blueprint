@@ -58,8 +58,32 @@ def edit_category(id):
         form = CategoryForm()
         if form.validate_on_submit():
             category.name = form.name.data
-            category.picture = request.files['picture']
+            category.description = form.description.data
 
+            db.session.commit()
+
+            flash("Category has been updated")
+            return redirect(url_for('categories.index', id=category.id))
+
+        form.name.data = category.name
+        form.description.data = category.description
+
+        return render_template('categories/edit_category.html', form=form)
+    else:
+        flash("You are not authorized to edit categories!")
+        categories = Category.query.order_by(Category.id)
+        return render_template("categories/index.html", categories=categories)
+
+@bp.route('/edit_picture/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_category_picture(id):
+    admin_email = current_user.email
+    if admin_email == 'aglinka8@gmail.com':
+        category = Category.query.get_or_404(id)
+        form = CategoryForm()
+        if form.validate_on_submit():
+            category.name = form.name.data
+            category.picture = request.files['picture']
             # get image name
             pic_filename = secure_filename(category.picture.filename)
             pic_name = str(uuid.uuid1()) + "_" + pic_filename
@@ -74,11 +98,12 @@ def edit_category(id):
             return redirect(url_for('categories.index', id=category.id))
 
         form.name.data = category.name
-        return render_template('categories/edit_category.html', form=form)
+        return render_template('categories/edit_category_picture.html', form=form)
     else:
         flash("You are not authorized to edit categories!")
         categories = Category.query.order_by(Category.id)
         return render_template("categories/index.html", categories=categories)
+
 
 
 @bp.route('/delete/<int:id>')

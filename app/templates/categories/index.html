@@ -20,11 +20,18 @@
                     {% if current_user.email == 'aglinka8@gmail.com' %}
 
                      <div class="col-4">
-                        {% if  category.picture %}
-                            <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="left">
-                        {% else %}
-                            <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="left">
-                        {% endif %}
+                        <div class="row mt-5">
+                            {% if  category.picture %}
+                                <img src="{{ url_for('static', filename='images/' + category.picture) }}" align="left">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/default_pic_small.jpg') }}" align="left">
+                            {% endif %}
+                         </div>
+                          <div class="row mt-5">
+                             <a href="{{ url_for('categories.edit_category_picture', id=category.id) }}" class="btn btn-outline-secondary btn-sm">
+                                Update picture
+                            </a>
+                          </div>
                     </div>
 
                     <div class="col-6">
@@ -44,7 +51,8 @@
                           <a href="{{ url_for('categories.delete_category', id=category.id) }}" class="btn btn-outline-danger btn-sm">
                             Delete
                         </a>
-                         <
+                         <br/>
+                         <br/>
                          <h5>{{ category.description }}</h5>
 
 
@@ -66,8 +74,12 @@
                                      </div>
                                 </div>
 
-                                <div class="col-2">
 
+                                <div class="col-7">
+                                    <div class="row mt-5">
+                                         <h5>{{ category.description }}</h5>
+                                    </div>
+                                </div>
 
                                 <br/>
 
