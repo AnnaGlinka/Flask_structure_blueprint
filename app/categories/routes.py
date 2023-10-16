@@ -33,8 +33,18 @@ def add_category():
         category = Category.query.filter_by(name=form.name.data).first()
         if category is None:
             category = Category(name=form.name.data, description=form.description.data)
+
+            category.picture = request.files['picture']
+            # get image name
+            pic_filename = secure_filename(category.picture.filename)
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['picture']
+            # save the image
+
+            category.picture = pic_name
             db.session.add(category)
             db.session.commit()
+            saver.save(os.path.join("app/static/images/", pic_name))
             flash("Category added successfully")
             return redirect(url_for('categories.index'))
         else:
